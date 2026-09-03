@@ -1001,7 +1001,7 @@
           <button class="menu-item" id="fixedTextItem">
             内容不变文字 <kbd>T</kbd>
           </button>
-          <button class="menu-item" id="dynamicTextItem">
+          <button class="menu-item" id="dynamicTextItem" onclick="alert('可变文字仅适用于MTR模组，需配合前置代码使用。\n如需查看前置代码，请到文件设置导出JS代码。')">
             内容可变文字
           </button>
         </div>
@@ -1226,7 +1226,9 @@
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer>版本：0.1 | 遇到问题？欢迎前往或仙全铁作品评论区反馈</footer>
+  <footer>版本：0.1 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
+      style="color: #87a39f;">Github代码库</a>反馈
+  </footer>
 
   <script>
     (function () {
@@ -1248,7 +1250,7 @@
       let layersTopFirst = true;
 
       let uid = 1;
-      const counters = { rect: 0, oval: 0, image: 0, text: 0 };
+      const counters = {rect: 0, oval: 0, image: 0, text: 0};
       let drag = null;
       let draft = null;
       let clipboard = null;
@@ -1391,13 +1393,17 @@
       /* ---------- helpers ---------- */
       const getShape = id => shapes.find(s => s.id === id);
 
-      const DYNAMIC_TEXT = 'text.dynamic';
+      const DYNAMIC_TEXT = '请设置要显示的内容';
 
       const DYNAMIC_TEXT_VALUES = new Set([
         DYNAMIC_TEXT,
-        'platform.next.en',
-        'platform.next.zh',
-        'train.speed'
+        'nextZh',
+        'nextEn',
+        'destZh',
+        'destEn',
+        'routeNameZh',
+        'routeNameEn',
+        'speed'
       ]);
 
       const isDynamicText = s => {
@@ -1412,8 +1418,8 @@
       const alignBtns = document.querySelectorAll('#alignTools .align-btn');
 
       function getTextBox(s) {
-        if (!s) return { x: 0, y: 0, w: 0, h: 0 };
-        if (s.type !== 'text') return { x: s.x, y: s.y, w: s.w, h: s.h };
+        if (!s) return {x: 0, y: 0, w: 0, h: 0};
+        if (s.type !== 'text') return {x: s.x, y: s.y, w: s.w, h: s.h};
 
         const align = s.align || 'left';
         let x = s.x;
@@ -1424,7 +1430,7 @@
           x = s.x - s.w;
         }
 
-        return { x, y: s.y, w: s.w, h: s.h };
+        return {x, y: s.y, w: s.w, h: s.h};
       }
 
       function setTextBoxFromAlign(s, boxX, boxY) {
@@ -1522,7 +1528,7 @@
 
       function getPos(e) {
         const r = canvas.getBoundingClientRect();
-        return { x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale };
+        return {x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale};
       }
 
       function hitHandle(px, py) {
@@ -1552,7 +1558,7 @@
               se: [b.x, b.y]
             };
 
-            return { key, ax: anchors[key][0], ay: anchors[key][1] };
+            return {key, ax: anchors[key][0], ay: anchors[key][1]};
           }
         }
 
@@ -1589,7 +1595,7 @@
       }
 
       function cloneShape(s) {
-        return { ...s };
+        return {...s};
       }
 
       function copySelected(cut) {
@@ -1650,7 +1656,7 @@
 
       function pushHistory() {
         history.length = historyIndex + 1;
-        history.push(JSON.stringify({ shapes, selectedId }, (key, value) => (key === 'img' ? undefined : value)));
+        history.push(JSON.stringify({shapes, selectedId}, (key, value) => (key === 'img' ? undefined : value)));
         if (history.length > MAX_HISTORY) history.shift();
         historyIndex = history.length - 1;
         updateHistoryButtons();
@@ -1719,7 +1725,8 @@
           g.fillStyle = 'rgb(200, 0, 100)';
           g.fillText("显示屏可见范围", 50, 50);
           g.font = '36px ' + FONTS.sans;
-          g.fillText("提示：选择图形后，可以拖动角落调整大小，调整时按Shift键可以保持宽高比。", 50, 150);
+          g.fillText("操作方法：先在顶部菜单选择图形，然后点击画板任意位置添加图形。", 50, 150);
+          g.fillText("提示：点击画板上的图形后，可以拖动角落调整大小，调整时按Shift键可以保持宽高比。", 50, 220);
         }
       }
 
@@ -1728,7 +1735,7 @@
         if (s.type === 'image') {
           if (!(s.img instanceof HTMLImageElement) && s.src) {
             const im = new Image();
-            im.onload = () => { s.img = im; render(); };
+            im.onload = () => {s.img = im; render();};
             im.src = s.src;
           }
           if (s.img && s.img.complete && s.img.naturalWidth > 0) {
@@ -1894,9 +1901,13 @@
 
         function getDynamicTextOptionsHTML(s) {
           const opts = [
-            { value: 'platform.next.en', label: '下一站的英文名' },
-            { value: 'platform.next.zh', label: '下一站的中文名' },
-            { value: 'train.speed', label: '速度' }
+            {value: 'nextZh', label: '中文站名（行驶中：前方到站；停车时：当前站）'},
+            {value: 'nextEn', label: '英文站名（行驶中：前方到站；停车时：当前站）'},
+            {value: 'destZh', label: '终点站中文名'},
+            {value: 'destEn', label: '终点站英文名'},
+            {value: 'routeNameZh', label: '路线中文名'},
+            {value: 'routeNameEn', label: '路线英文名'},
+            {value: 'speed', label: '速度（km/h）'}
           ];
 
           const hasKnownValue = opts.some(o => o.value === s.text);
@@ -1905,7 +1916,7 @@
           html += '<select class="dynamic-select" title="">';
 
           if (!hasKnownValue) {
-            html += `<option value="${s.text}" disabled selected hidden>请选择要显示的内容</option>`;
+            html += `<option value="${s.text}" disabled selected hidden>可变文字，请选择要显示的内容</option>`;
           }
 
           for (const o of opts) {
@@ -1941,18 +1952,19 @@
             + '<span class="licon">' + (s.type === 'rect' ? I.rect : s.type === 'oval' ? I.oval : s.type === 'image' ? I.image : I.text) + '</span>'
             + '<span class="lname">' + s.name + '</span>'
             + '<span class="lbtns">'
-            + '<button data-action="copy" data-action="copy" title="复制JS代码">' + I.copy + '</button>'
+            + '<button data-action="copy" data-action="copy" title="复制JS代码（仅图形部分）">' + I.copy + '</button>'
             + '<button data-action="up" title="移到前一个图层">' + I.up + '</button>'
             + '<button data-action="down" title="移到后一个图层">' + I.down + '</button>'
             + '<button data-action="vis" title="隐藏图层">' + (s.visible ? I.eye : I.eyeOff) + '</button>'
             + '<button data-action="del" title="删除图层">' + I.trash + '</button>'
             + '</span>'
             + '</div>'
-            + (s.type === 'text' ? (`<div class="layer-line2 tooltip" data-tooltip="设置字体为Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}">g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}").deriveFont(0, 25));</div>`) : '')
+            + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="设置字体为Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}">g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}").deriveFont(0, 25));</div>`) : '')
             + (s.type === 'image' ? (`<div class="layer-line2 tooltip" data-tooltip="显示图片">g.drawImage(Resources.readBufferedImage(Resources.idRelative("./${s.fileName}", ${roundX}, ${roundY}, ${roundW}, ${roundH}, null)));</div>`) : '')
             + (hasFill ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isFillDynamic ? 'dynamic' : s.color}">g.setColor(Color.decode("${isFillDynamic ? 'dynamic' : s.color}"));</div>`) : '')
             + (hasShapeFill ? (`<div class="layer-line2 tooltip" data-tooltip="填充${s.type === 'rect' ? '长方形' : '椭圆形'}（x坐标${roundX}，y坐标${roundY}，宽${roundW}，高${roundH}）">g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
-            + (hasTextFill ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字">g.drawString("${s.text}", ${roundX}, ${roundY});</div>`) : '')
+            + ((!isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字">g.drawString("${s.text}", ${roundX}, ${roundY});</div>`) : '')
+            + ((isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字">g.drawString(${s.text}, ${roundX}, ${roundY});</div>`) : '')
             + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色">g.setColor(Color.decode("${isOutlineDynamic ? 'dynamic' : s.color}"));</div>`) : '')
             + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="绘制${s.type === 'rect' ? '长方形' : '椭圆形'}轮廓（x坐标${roundX}，y坐标${roundY}，宽${roundW}，高${roundH}）">g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
             + (isDynamicText(s) ? getDynamicTextOptionsHTML(s) : '')
@@ -2110,7 +2122,7 @@
             y1: p.y
           };
 
-          drag = { mode: 'draw' };
+          drag = {mode: 'draw'};
           hintEl.classList.add('gone');
           render();
         } else if (tool === 'textFixed' || tool === 'textDynamic') {
@@ -2160,7 +2172,7 @@
           const h = hitHandle(p.x, p.y);
           if (h) {
             const s = getShape(selectedId);
-            drag = { mode: 'resize', ax: h.ax, ay: h.ay, key: h.key, origW: s.w, origH: s.h };
+            drag = {mode: 'resize', ax: h.ax, ay: h.ay, key: h.key, origW: s.w, origH: s.h};
             canvas.style.cursor = handleCursor(h.key);
           }
           else {
@@ -2467,8 +2479,8 @@
           displayBtnId: 'colorDisplayBtn',
           colorInputId: 'colorInput',
           get: () => fillColor,
-          set: (c) => { fillColor = c; },
-          applyToShape: (s, c) => { s.color = c; },
+          set: (c) => {fillColor = c;},
+          applyToShape: (s, c) => {s.color = c;},
           hasDynamic: true,
           lastColor: '#564c61',
           shapeProp: 'color',
@@ -2479,8 +2491,8 @@
           displayBtnId: 'outlineColorDisplayBtn',
           colorInputId: 'outlineColorInput',
           get: () => outlineColor,
-          set: (c) => { outlineColor = c; },
-          applyToShape: (s, c) => { s.outlineColor = c; },
+          set: (c) => {outlineColor = c;},
+          applyToShape: (s, c) => {s.outlineColor = c;},
           hasDynamic: true,
           lastColor: '#564c61',
           shapeProp: 'outlineColor',
@@ -2491,7 +2503,7 @@
           displayBtnId: 'bgColorDisplayBtn',
           colorInputId: 'bgColorInput',
           get: () => bgColor,
-          set: (c) => { bgColor = c; },
+          set: (c) => {bgColor = c;},
           applyToShape: null,
           hasDynamic: false,
           shapeProp: null,
@@ -2720,11 +2732,11 @@
       /* ---------- export / import ---------- */
       document.getElementById('exportBtn').addEventListener('click', () => {
         const data = JSON.stringify(
-          { app: 'ShapeCanvas', version: 1, shapes, bgColor, screenW, screenH },
+          {app: 'ShapeCanvas', version: 1, shapes, bgColor, screenW, screenH},
           (key, value) => (key === 'img' ? undefined : value),
           2
         );
-        const blob = new Blob([data], { type: 'application/json' });
+        const blob = new Blob([data], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
@@ -2735,24 +2747,124 @@
 
       //export js
       document.getElementById('exportJsBtn').addEventListener('click', () => {
-        const lines = ['// My code'];
+
+        const lines = ['//以下代码按《仙全铁模板资源包》的格式展示。'];
+        lines.push(`//模板资源包下载地址：https://modrinth.com/resourcepack/mtr-mod-m-train-with-infopanels/versions`);
+        lines.push(`//如果您不用模板资源包，请自行抽取适用的代码。`);
+
+        lines.push(``);
+        lines.push(``);
+        lines.push(``);
 
         lines.push(`/* ---------- main.js ---------- */`);
 
-        let hasDynamicColor = false;
+        lines.push(``);
+        lines.push(`include(Resources.id("mtrsteamloco:scripts/display_helper.js"));`);
+        lines.push(``);
+        lines.push(`include("info-panel.js");`);
+        lines.push(``);
+        lines.push(`let infoPanelConfig = {`);
+        lines.push(`  "version": 1,`);
+        lines.push(`  "texSize": [2000, 400],`);
+        lines.push(`  "slots": [`);
+        lines.push(`    {`);
+        lines.push(`      "name": "info-panel",`);
+        lines.push(`      "texArea": [0, 0, ${screenW}, ${screenH}],`);
+        lines.push(`      "pos": [`);
+        lines.push(`        [`);
+        lines.push(`          [0.6595, 2.088, -0.4],`);
+        lines.push(`          [0.7775, 2.02, -0.4],`);
+        lines.push(`          [0.7775, 2.02, 0.4],`);
+        lines.push(`          [0.6595, 2.088, 0.4]`);
+        lines.push(`        ],`);
+        lines.push(`        [`);
+        lines.push(`          [-0.6595, 2.088, 0.4],`);
+        lines.push(`          [-0.7775, 2.02, 0.4],`);
+        lines.push(`          [-0.7775, 2.02, -0.4],`);
+        lines.push(`          [-0.6595, 2.088, -0.4]`);
+        lines.push(`        ]`);
+        lines.push(`      ],`);
+        lines.push(`      "offsets": [`);
+        lines.push(`        [0.0, 0.0, 7.5],`);
+        lines.push(`        [0.0, 0.0, 2.5],`);
+        lines.push(`        [0.0, 0.0, -2.5],`);
+        lines.push(`        [0.0, 0.0, -7.5]`);
+        lines.push(`      ]`);
+        lines.push(`    }`);
+        lines.push(`  ]`);
+        lines.push(`};`);
+        lines.push(``);
 
-        //for (const s of [...shapes].reverse()) {
-        for (const s of shapes) {
+        lines.push(`var infoPanelGenerator = new DisplayHelper(infoPanelConfig);`);
+        lines.push(``);
+        lines.push(`function create(ctx, state, train) {`);
+        lines.push(`  state.refreshRate = new RateLimit(0.1);`);
+        lines.push(`  state.infoPanel = infoPanelGenerator.create();`);
+        lines.push(`}`);
+        lines.push(``);
+        lines.push(`function render(ctx, state, train) {`);
+        lines.push(`  let g = state.infoPanel.graphicsFor("info-panel");`);
+        lines.push(`  if (state.refreshRate.shouldUpdate()) {`);
+        lines.push(`    let routePlats = train.getThisRoutePlatforms();`);
+        lines.push(`    let terminus = "";`);
+        lines.push(`    let routeName = "";`);
+        lines.push(`    let routeColor = Color.decode(rgba(0, 0, 0, 0));`);
+        lines.push(`    let nextStopIndex = 0;`);
+        lines.push(`    let distancePassed = 0;`);
+        lines.push(`    let speed = 0;`);
+        lines.push(`    if (routePlats != undefined && routePlats != null && routePlats[routePlats.size() - 1] != undefined && routePlats[routePlats.size() - 1] != null) {`);
+        lines.push(`      terminus = routePlats[routePlats.size() - 1].station.name;`);
+        lines.push(`      routeName = routePlats[routePlats.size() - 1].route.name;`);
+        lines.push(`      routeColor = Color(routePlats[routePlats.size() - 1].route.color);`);
+        lines.push(`    }`);
 
-          if (!hasDynamicColor && (s.color === 'dynamic' || s.outlineColor === 'dynamic')) {
-            lines.push(`read color;`);
-            hasDynamicColor = true;
-          }
-        }
+        lines.push(`    if (train.getThisRoutePlatformsNextIndex() != undefined && train.getThisRoutePlatformsNextIndex() != null)`);
+        lines.push(`      nextStopIndex = train.getThisRoutePlatformsNextIndex();`);
+        lines.push(`    if (train.railProgress() != undefined && train.railProgress() != null)`);
+        lines.push(`      distancePassed = train.railProgress();`);
+        lines.push(`    if (routePlats != undefined && routePlats != null && nextStopIndex < routePlats.size()) {`);
+        lines.push(`      distanceOfPlatFromStart = routePlats.get(nextStopIndex).distance;`);
+        lines.push(`      hasArrived = (distancePassed >= distanceOfPlatFromStart - 50 && distancePassed <= distanceOfPlatFromStart);`);
+        lines.push(`    }`);
+        lines.push(`    speed = train.speed();`);
+
+        lines.push(`    let isNextToDepot = false;`);
+        lines.push(`    let isGoingToDepot = false;`);
+        lines.push(`    nextToDepot = ((allPlatsNextIndex == allPlats.length - 1) && hasArrived);`);
+        lines.push(`    goingToDepot = (allPlatsNextIndex > allPlats.length - 1);`);
+        lines.push(`    DrawInfoPanel(g, state, routePlats, nextStopIndex, hasArrived, routeColor, speed, isNextToDepot, isGoingToDepot);`);
+        lines.push(`    state.infoPanel.upload();`);
+        lines.push(`  }`);
+        lines.push(`  for (let i = 0; i < train.trainCars(); i++) {`);
+        lines.push(`    ctx.drawCarModel(state.infoPanel.model, i, null);`);
+        lines.push(`  }`);
+        lines.push(`}`);
+        lines.push(``);
+        lines.push(`function dispose(ctx, state, train) {`);
+        lines.push(`  state.infoPanel.close();`);
+        lines.push(`}`);
+
+        lines.push(``);
+        lines.push(``);
+        lines.push(``);
+
+        lines.push(`/* ---------- info-panel.js ---------- */`);
 
         lines.push(``);
 
-        lines.push(`/* ---------- canvas.js ---------- */`);
+        lines.push(`importPackage(java.awt);`);
+        lines.push(`importPackage(java.awt.geom);`);
+        lines.push(`importPackage(java.lang.math);`);
+        lines.push(``);
+        lines.push(`function DrawInfoPanel(g, state, routePlats, nextStopIndex, hasArrived, routeColor, speed, isNextToDepot, isGoingToDepot) {`);
+        lines.push(`    let next = "",`);
+        lines.push(`        nextZh = "",`);
+        lines.push(`        nextEn = "";`);
+        lines.push(`    if (routePlats[nextStopIndex] != undefined && routePlats[nextStopIndex] != null) {`);
+        lines.push(`        next = routePlats[nextStopIndex].station.name;`);
+        lines.push(`        nextZh = TextUtil.getCjkParts(next);`);
+        lines.push(`        nextEn = TextUtil.getNonCjkParts(next);`);
+        lines.push(`    }`);
 
         if (bgColor && bgColor !== 'transparent') {
           lines.push(`g.setColor(Color.decode("${bgColor}"));`);
@@ -2765,48 +2877,60 @@
             roundW = s.w.toFixed(0),
             roundH = s.h.toFixed(0);
 
-          if (s.type === 'rect') {
-            if (s.color && s.color !== 'transparent') {
-              lines.push(`g.setColor(Color.decode("${s.color}"));`);
-              lines.push(`g.fillRect(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
-            }
-            if (s.outlineColor && s.outlineColor !== 'transparent') {
-              lines.push(`g.setColor(Color.decode("${s.outlineColor}"));`);
-              lines.push(`g.drawRect(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
-            }
-          }
+          let hasColor = (s.color && s.color !== 'transparent'),
+            isColorDynamic = (s.color === 'dynamic'),
+            hasOutlineColor = (s.outlineColor && s.outlineColor !== 'transparent'),
+            isOutlineColorDynamic = (s.outlineColor === 'dynamic');
 
-          else if (s.type === 'oval') {
-            if (s.color && s.color !== 'transparent') {
-              lines.push(`g.setColor(Color.decode("${s.color}"));`);
-              lines.push(`g.fillOval(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+          if (s.type === 'rect' || s.type === 'oval') {
+            if (hasColor) {
+              if (isColorDynamic)
+                lines.push(`g.setColor(Color.decode(routeColor));`);
+              else
+                lines.push(`g.setColor(Color.decode("${s.color}"));`);
+              lines.push(`g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
-            if (s.outlineColor && s.outlineColor !== 'transparent') {
-              lines.push(`g.setColor(Color.decode("${s.outlineColor}"));`);
-              lines.push(`g.drawOval(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+            if (hasOutlineColor) {
+              if (isOutlineColorDynamic)
+                lines.push(`g.setColor(Color.decode(routeColor));`);
+              else
+                lines.push(`g.setColor(Color.decode("${s.outlineColor}"));`);
+              lines.push(`g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
           }
 
           else if (s.type === 'image')
-            lines.push(`g.drawImage(${s.fileName});`);
+            lines.push(`g.drawImage(${s.fileName}, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
 
-          if (s.type === 'text') {
-            if (s.color && s.color !== 'transparent') {
+          else if (s.type === 'text') {
+            if (hasColor) {
               lines.push(`g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}").deriveFont(0, 25));`);
-              lines.push(s.font);
-              lines.push(`g.setColor(Color.decode("${s.color}"));`);
-              lines.push(`g.drawString("${s.text}", ${roundX}, ${roundY});`);
+              if (isColorDynamic)
+                lines.push(`g.setColor(routeColor);`);
+              else
+                lines.push(`g.setColor(Color.decode("${s.color}"));`);
+              if (DYNAMIC_TEXT_VALUES.has(s.text))
+                lines.push(`g.drawString(${s.text}, ${roundX}, ${roundY});`);
+              else
+                lines.push(`g.drawString("${s.text}", ${roundX}, ${roundY});`);
             }
           }
         }
 
-        lines.push('// END');
+        lines.push(``);
+        lines.push(``);
+        lines.push(``);
 
-        const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+        lines.push(`/* ---------- formatting.js ---------- */`);
+
+        lines.push(``);
+        lines.push(`//不需要修改`);
+
+        const blob = new Blob([lines.join('\n')], {type: 'text/plain'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'lcd-tool-' + new Date().toISOString().slice(0, 10) + '.txt';
+        a.download = 'lcd-js-' + new Date().toISOString().slice(0, 10) + '.txt';
         a.click();
         URL.revokeObjectURL(url);
       });
@@ -2865,7 +2989,7 @@
         tmp.width = dw;
         tmp.height = dh;
 
-        const tg = tmp.getContext('2d', { willReadFrequently: true });
+        const tg = tmp.getContext('2d', {willReadFrequently: true});
 
         tg.imageSmoothingEnabled = false;
 
@@ -2918,7 +3042,7 @@
         const H = Math.round(screenH);
         if (W <= 0 || H <= 0) return;
 
-        if (!confirm('确认显示屏宽' + W + '像素，高' + H + '像素？\n如果显示异常，请修改像素渲染方向和顺序。')) return;
+        if (!confirm('确认电显宽' + W + '像素，高' + H + '像素？\n目前只支持单色电显；\n所有图形除纯黑和透明部份外，一律显示为白色；\n背景和可变文字将不会导出。\n如果电显画面异常，请尝试调整像素渲染方向和顺序。')) return;
 
         const isWhite = c => {
           if (!c) return false;
@@ -2932,7 +3056,7 @@
         const off = document.createElement('canvas');
         off.width = W;
         off.height = H;
-        const og = off.getContext('2d', { willReadFrequently: true });
+        const og = off.getContext('2d', {willReadFrequently: true});
 
         og.fillStyle = '#000000';
         og.fillRect(0, 0, W, H);
@@ -3021,14 +3145,32 @@
         }
 
         const lines = [];
-        lines.push('Hello');
-        lines.push('{' + parts.join(', ') + '}');
-        lines.push(`Bye`);
-        const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
+        //export c++ code
+        lines.push(`#include "ssd1306.h"`);
+        lines.push(`#include <PCM.h>`);
+        lines.push(``);
+        lines.push(`const unsigned char graphics[] PROGMEM = {`);
+        lines.push(`  //这是图形代码：如果你不用ssd1306电显，可以只用这块代码。`);
+        lines.push(`  ${parts.join(', ')}`);
+        lines.push(`};`);
+        lines.push(``);
+        lines.push(`static void draw() {`);
+        lines.push(`  ssd1306_drawBitmap(0, 0, ${screenW}, ${screenH}, graphics);`);
+        lines.push(`}`);
+        lines.push(``);
+        lines.push(`void setup() {`);
+        lines.push(`  ssd1306_${screenW}x${screenH}_i2c_init();`);
+        lines.push(`}`);
+        lines.push(``);
+        lines.push(`void loop() {`);
+        lines.push(`  draw();`);
+        lines.push(`}`);
+        lines.push(``);
+        const blob = new Blob([lines.join('\n')], {type: 'text/plain'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'lcd-exported-cpp-' + new Date().toISOString().slice(0, 10) + '.txt';
+        a.download = 'lcd-cpp-' + new Date().toISOString().slice(0, 10) + '.ino';
         a.click();
         URL.revokeObjectURL(url);
       }
@@ -3052,7 +3194,7 @@
             screenH = parsed.screenH;
             screenHInput.value = String(screenH);
 
-            const fallback = { rect: counters.rect, oval: counters.oval, text: counters.text };
+            const fallback = {rect: counters.rect, oval: counters.oval, text: counters.text};
 
             const loaded = [];
             for (const s of incoming) {
@@ -3109,7 +3251,7 @@
             selectedId = null;
             renderLayerList(); render();
           } catch (err) {
-            alert('导入失败！请确认文件格式正确');
+            alert('导入失败！请确认文件格式正确。');
           }
           fileInput.value = '';
         };
@@ -3148,7 +3290,7 @@
       window.addEventListener('pointerdown', e => {
         if (!e.target.closest('.file-menu-wrap')) closeAllDropdowns();
       });
-      window.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllDropdowns(); });
+      window.addEventListener('keydown', e => {if (e.key === 'Escape') closeAllDropdowns();});
 
       /* ---------- keyboard ---------- */
       window.addEventListener('keydown', e => {
@@ -3156,15 +3298,15 @@
         const k = e.key.toLowerCase();
 
         if (e.ctrlKey || e.metaKey) {
-          if (k === 'z') { e.preventDefault(); e.shiftKey ? redo() : undo(); return; }
-          if (k === 'y') { e.preventDefault(); redo(); return; }
-          if (k === 'c') { copySelected(false); e.preventDefault(); return; }
-          if (k === 'x') { copySelected(true); e.preventDefault(); return; }
-          if (k === 'v') { paste(); e.preventDefault(); return; }
+          if (k === 'z') {e.preventDefault(); e.shiftKey ? redo() : undo(); return;}
+          if (k === 'y') {e.preventDefault(); redo(); return;}
+          if (k === 'c') {copySelected(false); e.preventDefault(); return;}
+          if (k === 'x') {copySelected(true); e.preventDefault(); return;}
+          if (k === 'v') {paste(); e.preventDefault(); return;}
           return;
         }
 
-        const arrows = { arrowup: [0, -1], arrowdown: [0, 1], arrowleft: [-1, 0], arrowright: [1, 0] };
+        const arrows = {arrowup: [0, -1], arrowdown: [0, 1], arrowleft: [-1, 0], arrowright: [1, 0]};
         if (arrows[e.key.toLowerCase()]) {
           const s = getShape(selectedId);
           if (s) {
@@ -3182,7 +3324,7 @@
         else if (k === 'r') setTool('rectOutline');
         else if (k === 'o') setTool('ovalOutline');
         else if (k === 't') setTool('textFixed');
-        else if (k === 'escape') { selectedId = null; renderLayerList(); render(); }
+        else if (k === 'escape') {selectedId = null; renderLayerList(); render();}
         else if (k === 'delete') {
           const idx = shapes.findIndex(s => s.id === selectedId);
           if (idx >= 0) {
@@ -3227,7 +3369,7 @@
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区留言～\n此工具暂未适配手机画面，建议用电脑开启。');
+      alert('欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。');
     })();
   </script>
 </body>
