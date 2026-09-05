@@ -2821,7 +2821,7 @@
       const rmgFileInput = document.getElementById('rmgFileInput');
 
       function importFromRMG() {
-        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不能调整路线图样式。');
+        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不支持MTR4\n\n游戏内显示屏站名颜色\n取决于画板最左边的站名颜色。');
         rmgFileInput.click();
       }
       document.getElementById('importFromRmgBtn').addEventListener('click', importFromRMG);
