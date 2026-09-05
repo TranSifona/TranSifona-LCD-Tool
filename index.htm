@@ -1086,7 +1086,7 @@
             <svg width="14" height="14" viewBox="0 0 16 16">
               <rect x="2.5" y="4" width="13" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.4" />
             </svg>
-            <span>显示屏尺寸<br />（暂不适用于MTR模组）</span>
+            <span>显示屏尺寸<br />（暂不支持导出JS）</span>
           </div>
           <div class="screen-size-inputs">
             <label class="color-label" for="screenWInput">宽</label>
@@ -1223,7 +1223,7 @@
     <!-- LEFT: layer panel -->
     <aside>
       <div class="panel-head">
-        <h2>图层</h2>
+        <h2>图层（JS代码）</h2>
         <div class="panel-head-right">
           <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
             <span>排序方式：</span>
@@ -1273,9 +1273,13 @@
 
       let uid = 1;
       const counters = { rect: 0, oval: 0, image: 0, text: 0 };
-      let routeMapStns = 0;
+      let routeMapStnCount = 0;
       let mainRouteW = 0;
       let textWMax = 0;
+      let routeX = 0;
+      let routeY = 0;
+      let routeW = 0;
+      let routeH = 0;
 
       let drag = null;
       let draft = null;
@@ -1420,14 +1424,20 @@
       /* ---------- helpers ---------- */
       const getShape = id => shapes.find(s => s.id === id);
 
-      const DYNAMIC_TEXT = '请设置要显示的内容';
+      const DYNAMIC_TEXT = '未知';
 
       const DYNAMIC_TEXT_VALUES = new Set([
         DYNAMIC_TEXT,
+        'nextTxZh',
+        'nextTxEn',
         'nextZh',
         'nextEn',
         'destZh',
         'destEn',
+        'next2TxZh',
+        'next2TxEn',
+        'next2Zh',
+        'next2En',
         'routeNameZh',
         'routeNameEn',
         'speed'
@@ -1783,7 +1793,7 @@
           g.globalAlpha = 1;
           g.fillStyle = resolveColor(s.color);
 
-          let stnNameLimit = 0.95 * (mainRouteW / routeMapStns);
+          let stnNameLimit = 0.95 * (mainRouteW / routeMapStnCount);
           if (s.group === 'routeMap' && textWMax > stnNameLimit) {
             let tempScale = stnNameLimit / textWMax;
             g.scale(tempScale, 1);
@@ -1943,13 +1953,19 @@
 
         function getDynamicTextOptionsHTML(s) {
           const opts = [
-            { value: 'nextZh', label: '中文站名（行驶中：前方到站；停车时：当前站）' },
-            { value: 'nextEn', label: '英文站名（行驶中：前方到站；停车时：当前站）' },
-            { value: 'destZh', label: '终点站中文名' },
-            { value: 'destEn', label: '终点站英文名' },
-            { value: 'routeNameZh', label: '路线中文名' },
-            { value: 'routeNameEn', label: '路线英文名' },
-            { value: 'speed', label: '速度（km/h）' }
+            { value: 'nextTxZh', label: '1中文提示（行驶中：“下一站”；停车时：“已到達”）' },
+            { value: 'nextTxEn', label: '2英文提示（行驶中："Next is"；停车时："Now at"）' },
+            { value: 'nextZh', label: '3中文站名（行驶中：前方到站；停车时：当前站）' },
+            { value: 'nextEn', label: '4英文站名（行驶中：前方到站；停车时：当前站）' },
+            { value: 'destZh', label: '5终点站中文名' },
+            { value: 'destEn', label: '6终点站英文名' },
+            { value: 'next2TxZh', label: '7中文提示（行驶中：不显示；停车时：“下一站”）' },
+            { value: 'next2TxEn', label: '8英文提示（行驶中：不显示；停车时："Next is"）' },
+            { value: 'next2Zh', label: '9中文站名（行驶中：不显示；停车时：下一站）' },
+            { value: 'next2En', label: '10英文站名（行驶中：不显示；停车时：下一站）' },
+            { value: 'routeNameZh', label: '11路线中文名' },
+            { value: 'routeNameEn', label: '12路线英文名' },
+            { value: 'speed', label: '13速度（km/h）' }
           ];
 
           const hasKnownValue = opts.some(o => o.value === s.text);
@@ -2001,18 +2017,19 @@
             + '<button data-action="del" title="删除图层">' + I.trash + '</button>'
             + '</span>'
             + '</div>'
-            + ((s.type === 'image') ? (`<div class="layer-line2 tooltip" data-tooltip="需要前置代码读取图片文件数据">//需要前置代码，请到文件设置导出JS代码查看。</div>`) : '')
-            + ((isFillDynamic || isOutlineDynamic || isDynamicText(s)) ? (`<div class="layer-line2 tooltip" data-tooltip="需要前置代码读取MTR模组数据">//需要前置代码，请到文件设置导出JS代码查看。</div>`) : '')
-            + ((hasTextFill && s.group === 'routeMap' && s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要前置代码读取MTR模组数据">//需要前置代码，请到文件设置导出JS代码查看。</div>`) : '')
+            + ((s.type === 'image') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取图片文件数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
+            + ((s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码对文字排版">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
+            + ((isFillDynamic || isOutlineDynamic || isDynamicText(s)) ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
+            + ((hasTextFill && s.group === 'routeMap' && s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
             + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="设置字体为Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}">g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}")</div>`) : '')
             + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="字体大小${s.fontSize}">.deriveFont(0, ${s.fontSize}));</div>`) : '')
             + (s.type === 'image' ? (`<div class="layer-line2 tooltip" data-tooltip="显示图片（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.drawImage(图片变量（略）, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);</div>`) : '')
             + (hasFill ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isFillDynamic ? '与路线色一致' : s.color}">g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.color}"`)}));</div>`) : '')
             + (hasShapeFill ? (`<div class="layer-line2 tooltip" data-tooltip="填充${s.type === 'rect' ? '长方形' : '椭圆形'}（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
-            + ((s.group !== 'routeMap' && !isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（左下x=${roundX}，左下y=${roundY}）">g.drawString("${s.text}", ${roundX}, ${roundY});</div>`) : '')
-            + ((s.group !== 'routeMap' && isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（左下x=${roundX}，左下y=${roundY}）">g.drawString(${s.text}, ${roundX}, ${roundY});</div>`) : '')
-            + ((s.group === 'routeMap' && s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（左下x=${roundX}，左下y=${roundY}）">g.drawString(车站名称（略）, ${roundX}, ${roundY});</div>`) : '')
-            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isOutlineDynamic ? '与路线色一致' : s.color}">g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.outlineColor}"`)}));</div>`) : '')
+            + ((s.group !== 'routeMap' && !isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, "${s.text}", ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
+            + ((s.group !== 'routeMap' && isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
+            + ((s.group === 'routeMap' && s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, 车站名称（略）, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
+            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isOutlineDynamic ? '与路线色一致' : s.outlineColor}">g.setColor(Color${isOutlineDynamic ? '(routeColor' : (`.decode("${s.outlineColor}"`)}));</div>`) : '')
             + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="绘制${s.type === 'rect' ? '长方形' : '椭圆形'}轮廓（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
             + (isDynamicText(s) ? getDynamicTextOptionsHTML(s) : '')
             ;
@@ -2142,7 +2159,7 @@
       orderToggle.addEventListener('click', () => {
         layersTopFirst = !layersTopFirst;
         orderToggle.classList.toggle('reversed', !layersTopFirst);
-        document.getElementById('orderLabel').textContent = layersTopFirst ? '图层从前到后' : '跟随JS代码';
+        document.getElementById('orderLabel').textContent = layersTopFirst ? '图层从前到后' : '图层从后到前';
         orderToggle.title = layersTopFirst
           ? '点击切换排序方式'
           : '点击切换排序方式';
@@ -2804,7 +2821,7 @@
       const rmgFileInput = document.getElementById('rmgFileInput');
 
       function importFromRMG() {
-        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不支持支线。');
+        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不能调整路线图样式。');
         rmgFileInput.click();
       }
       document.getElementById('importFromRmgBtn').addEventListener('click', importFromRMG);
@@ -2848,7 +2865,7 @@
 
         bgColor = '#e8f2f0';
 
-        /* transit line */
+        /* main line */
         const lineW = screenW * 0.8;
         mainRouteW = lineW;
         const lineX = (screenW - lineW) / 2;
@@ -2866,6 +2883,10 @@
           strokeWidth: outlineWidth,
           group: 'routeMap'
         });
+        routeX = lineX;
+        routeY = lineCY - lineH / 2;
+        routeW = lineW;
+        routeH = lineH;
 
         /* stations */
         const R = 15;
@@ -2874,7 +2895,7 @@
         const ZH_SIZE = 30, EN_SIZE = 20;
         const textColor = fillColor;
         const n = stationIds.length;
-        routeMapStns = n;
+        routeMapStnCount = n;
 
         const addLabel = (text, fontSize, cx, y) => {
           const s = {
@@ -2937,7 +2958,7 @@
       //export js
       document.getElementById('exportJsBtn').addEventListener('click', () => {
 
-        const ok = confirm('显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》。\n\n请将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录。\n\n受系统安全限制，JS代码将导出至txt文件。');
+        const ok = confirm('代码内显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》\n及相关专栏。\n\n请将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录。\n\n受系统安全限制，JS代码将导出至txt文件。');
         if (!ok) return;
 
         const lines = ['//以下代码按《仙全铁模板资源包》的格式展示。'];
@@ -2956,7 +2977,8 @@
         lines.push(``);
         lines.push(`include("info-panel.js");`);
         lines.push(``);
-        lines.push(`//显示屏尺寸与位置设置，具体代码含义请看《仙全铁MTR模组JS教程—第1集》`);
+        lines.push(`//显示屏尺寸与位置设置，具体代码含义请看《仙全铁MTR模组JS教程—第1集》及相关专栏`);
+        lines.push(`//https://www.bilibili.com/video/BV1ZY3G6tEpa`);
         lines.push(`let infoPanelConfig = {`);
         lines.push(`  "version": 1,`);
         lines.push(`  "texSize": [2000, 400],`);
@@ -3006,28 +3028,30 @@
         lines.push(`    let nextStopIndex = 0;`);
         lines.push(`    let distancePassed = 0;`);
         lines.push(`    let speed = 0;`);
-        lines.push(`    if (routePlats != undefined && routePlats != null && routePlats[routePlats.size() - 1] != undefined && routePlats[routePlats.size() - 1] != null) {`);
+        lines.push(`    if (routePlats !== undefined && routePlats !== null && routePlats[routePlats.size() - 1] !== undefined && routePlats[routePlats.size() - 1] !== null) {`);
         lines.push(`      terminus = routePlats[routePlats.size() - 1].station.name;`);
         lines.push(`      routeName = routePlats[routePlats.size() - 1].route.name;`);
         lines.push(`      routeColor = Color(routePlats[routePlats.size() - 1].route.color);`);
         lines.push(`    }`);
 
-        lines.push(`    if (train.getThisRoutePlatformsNextIndex() != undefined && train.getThisRoutePlatformsNextIndex() != null)`);
+        lines.push(`    if (train.getThisRoutePlatformsNextIndex() !== undefined && train.getThisRoutePlatformsNextIndex() !== null)`);
         lines.push(`      nextStopIndex = train.getThisRoutePlatformsNextIndex();`);
-        lines.push(`    if (train.railProgress() != undefined && train.railProgress() != null)`);
+        lines.push(`    if (train.railProgress() !== undefined && train.railProgress() !== null)`);
         lines.push(`      distancePassed = train.railProgress();`);
         lines.push(``);
         lines.push(`    let hasArrived = false;`);
-        lines.push(`    if (routePlats != undefined && routePlats != null && nextStopIndex < routePlats.size()) {`);
+        lines.push(`    if (routePlats !== undefined && routePlats !== null && nextStopIndex < routePlats.size()) {`);
         lines.push(`      distanceOfPlatFromStart = routePlats.get(nextStopIndex).distance;`);
         lines.push(`      hasArrived = (distancePassed >= distanceOfPlatFromStart - 50 && distancePassed <= distanceOfPlatFromStart);`);
         lines.push(`    }`);
         lines.push(`    speed = train.speed();`);
 
+        lines.push(`    let allPlats = train.getAllPlatforms();`);
+        lines.push(`    let allPlatsNextIndex = train.getAllPlatformsNextIndex();`);
         lines.push(`    let isNextToDepot = false;`);
         lines.push(`    let isGoingToDepot = false;`);
-        lines.push(`    //nextToDepot = ((allPlatsNextIndex == allPlats.length - 1) && hasArrived);`);
-        lines.push(`    //goingToDepot = (allPlatsNextIndex > allPlats.length - 1);`);
+        lines.push(`    nextToDepot = ((allPlatsNextIndex === allPlats.length - 1) && hasArrived);`);
+        lines.push(`    goingToDepot = (allPlatsNextIndex > allPlats.length - 1);`);
         lines.push(`    DrawInfoPanel(g, state, routePlats, nextStopIndex, hasArrived, terminus, routeName, routeColor, speed, isNextToDepot, isGoingToDepot);`);
         lines.push(`    state.infoPanel.upload();`);
         lines.push(`  }`);
@@ -3069,47 +3093,103 @@
 
         lines.push(`function DrawInfoPanel(g, state, routePlats, nextStopIndex, hasArrived, terminus, routeName, routeColor, speed, isNextToDepot, isGoingToDepot) {`);
 
-        lines.push(`    let routeNameZh = "";`);
-        lines.push(`    let routeNameEn = "";`);
-        lines.push(`    if (routeName != undefined && routeName != null) {`);
-        lines.push(`        routeNameZh = TextUtil.getCjkParts(routeName);`);
-        lines.push(`        routeNameEn = TextUtil.getNonCjkParts(routeName);`);
-        lines.push(`    }`);
+        lines.push(`  let routeNameZh = "";`);
+        lines.push(`  let routeNameEn = "";`);
+        lines.push(`  if (routeName !== undefined && routeName !== null) {`);
+        lines.push(`    routeNameZh = TextUtil.getCjkParts(routeName);`);
+        lines.push(`    routeNameEn = TextUtil.getNonCjkParts(routeName);`);
+        lines.push(`  }`);
         lines.push(``);
 
-        lines.push(`    let dest = "";`);
-        lines.push(`    let destZh = "";`);
-        lines.push(`    let destEn = "";`);
-        lines.push(`    if (terminus != undefined && terminus != null) {`);
-        lines.push(`        dest = terminus;`);
-        lines.push(`        destZh = TextUtil.getCjkParts(dest);`);
-        lines.push(`        destEn = TextUtil.getNonCjkParts(dest);`);
-        lines.push(`    }`);
+        lines.push(`  let dest = "";`);
+        lines.push(`  let destZh = "";`);
+        lines.push(`  let destEn = "";`);
+        lines.push(`  if (terminus !== undefined && terminus !== null) {`);
+        lines.push(`    dest = terminus;`);
+        lines.push(`    destZh = TextUtil.getCjkParts(dest);`);
+        lines.push(`    destEn = TextUtil.getNonCjkParts(dest);`);
+        lines.push(`  }`);
         lines.push(``);
 
-        lines.push(`    let next = "";`);
-        lines.push(`    let nextZh = "";`);
-        lines.push(`    let nextEn = "";`);
-        lines.push(`    if (routePlats[nextStopIndex] != undefined && routePlats[nextStopIndex] != null) {`);
-        lines.push(`        next = routePlats[nextStopIndex].station.name;`);
-        lines.push(`        nextZh = TextUtil.getCjkParts(next);`);
-        lines.push(`        nextEn = TextUtil.getNonCjkParts(next);`);
-        lines.push(`    }`);
+        lines.push(`  let next = "";`);
+        lines.push(`  let nextZh = "";`);
+        lines.push(`  let nextEn = "";`);
+        lines.push(`  let next2 = "";`);
+        lines.push(`  let next2Zh = "";`);
+        lines.push(`  let next2En = "";`);
+        lines.push(`  if (routePlats[nextStopIndex] !== undefined && routePlats[nextStopIndex] !== null && routePlats[nextStopIndex + 1] !== undefined && routePlats[nextStopIndex + 1] !== null) {`);
+        lines.push(`    next = routePlats[nextStopIndex].station.name;`);
+        lines.push(`    nextZh = TextUtil.getCjkParts(next);`);
+        lines.push(`    nextEn = TextUtil.getNonCjkParts(next);`);
+        lines.push(`    next2 = routePlats[nextStopIndex + 1].station.name;`);
+        lines.push(`    next2Zh = hasArrived ? TextUtil.getCjkParts(next2) : "";`);
+        lines.push(`    next2En = hasArrived ? TextUtil.getNonCjkParts(next2) : "";`);
+        lines.push(`  }`);
         lines.push(``);
 
-        lines.push(`    speed *= 72;`);
-        lines.push(`    speed = Math.round(speed);`);
+        lines.push(`  if (goingToDepot) {`);
+        lines.push(`    destZh = nextZh = "車廠";`);
+        lines.push(`    destEn = nextEn = "Depot";`);
+        lines.push(`  }`);
         lines.push(``);
 
-        lines.push(`    let stroke = [];`);
+        lines.push(`  let nextTxZh = "";`);
+        lines.push(`  let nextTxEn = "";`);
+        lines.push(`  let next2TxZh = "";`);
+        lines.push(`  let next2TxEn = "";`);
+        lines.push(`  nextTxZh = hasArrived ? "已到達" : "下一站";`);
+        lines.push(`  nextTxEn = hasArrived ? "Now at" : "Next is";`);
+        lines.push(`  next2TxZh = hasArrived ? "下一站" : "";`);
+        lines.push(`  next2TxEn = hasArrived ? "Next is" : "";`);
+        lines.push(``);
+
+        lines.push(`  speed *= 72;`);
+        lines.push(`  speed = Math.round(speed);`);
+        lines.push(``);
+
+        lines.push(`  let stroke = [];`);
         let strokeId = 0;
         lines.push(``);
 
         if (bgColor && bgColor !== 'transparent') {
-          lines.push(`g.setColor(Color.decode("${bgColor}"));`);
-          lines.push(`g.fillRect(0, 0, ${screenW}, ${screenH});`);
+          lines.push(`  g.setColor(Color.decode("${bgColor}"));`);
+          lines.push(`  g.fillRect(0, 0, ${screenW}, ${screenH});`);
         }
 
+        let hasRouteMap = false;
+        let routeMapDrawn = false;
+        let routeMapStnFill = 'transparent';
+        let routeMapStnOutline = 'transparent';
+        let routeMapTextFill = 'transparent';
+
+        let hasRMSF = false;
+        let hasRMSO = false;
+        let hasRMTF = false;
+
+        //check for route map style
+        for (const s of shapes) {
+          if (s.group === 'routeMap') {
+            hasRouteMap = true;
+            if (s.type === 'oval') {
+              if (s.color && s.color !== 'transparent' && !hasRMSF) {
+                routeMapStnFill = s.color;
+                hasRMSF = true;
+              }
+              if (s.outlineColor && s.outlineColor !== 'transparent' && !hasRMSO) {
+                routeMapStnOutline = s.outlineColor;
+                hasRMSO = true;
+              }
+            }
+            if (s.type === 'text') {
+              if (s.color && s.color !== 'transparent' && !hasRMTF) {
+                routeMapTextFill = s.color;
+                hasRMTF = true;
+              }
+            }
+          }
+        }
+
+        //draw shapes
         for (const s of shapes) {
           const roundX = s.x.toFixed(0),
             roundY = s.y.toFixed(0),
@@ -3121,49 +3201,138 @@
             hasOutlineColor = (s.outlineColor && s.outlineColor !== 'transparent'),
             isOutlineColorDynamic = (s.outlineColor === 'dynamic');
 
-          if (s.type === 'rect' || s.type === 'oval') {
+          if ((s.type === 'rect' || s.type === 'oval') && s.group !== 'routeMap') {
             if (hasColor) {
               if (isColorDynamic)
-                lines.push(`g.setColor(Color(routeColor));`);
+                lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`g.setColor(Color.decode("${s.color}"));`);
-              lines.push(`g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+                lines.push(`  g.setColor(Color.decode("${s.color}"));`);
+              lines.push(`  g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
             if (hasOutlineColor) {
-              lines.push(`stroke[${strokeId}] = new BasicStroke(${s.strokeWidth});`);
-              lines.push(`g.setStroke(stroke[${strokeId}]);`);
+              lines.push(`  stroke[${strokeId}] = new BasicStroke(${s.strokeWidth});`);
+              lines.push(`  g.setStroke(stroke[${strokeId}]);`);
               strokeId++;
 
               if (isOutlineColorDynamic)
-                lines.push(`g.setColor(Color(routeColor));`);
+                lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`g.setColor(Color.decode("${s.outlineColor}"));`);
-              lines.push(`g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+                lines.push(`  g.setColor(Color.decode("${s.outlineColor}"));`);
+              lines.push(`  g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
           }
 
-          else if (s.type === 'image') {
-            lines.push(`g.drawImage(img[${imgId}], ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
+          else if (s.type === 'image' && s.group !== 'routeMap') {
+            lines.push(`  g.drawImage(img[${imgId}], ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
             imgId++;
           }
 
-          else if (s.type === 'text') {
+          else if (s.type === 'text' && s.group !== 'routeMap') {
             if (hasColor) {
-              lines.push(`g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}").deriveFont(0, ${s.fontSize}));`);
+              lines.push(`  g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}").deriveFont(0, ${s.fontSize}));`);
               if (isColorDynamic)
-                lines.push(`g.setColor(Color(routeColor));`);
+                lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`g.setColor(Color.decode("${s.color}"));`);
+                lines.push(`  g.setColor(Color.decode("${s.color}"));`);
               if (DYNAMIC_TEXT_VALUES.has(s.text))
-                lines.push(`g.drawString(${s.text}, ${roundX}, ${roundY});`);
+                lines.push(`  AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
               else
-                lines.push(`g.drawString("${s.text}", ${roundX}, ${roundY});`);
+                lines.push(`  AlignText(g, "${s.text}"", ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
             }
+          }
+
+          else if (s.group === 'routeMap' && !routeMapDrawn) {
+            lines.push(`  DrawRouteMap(g, routePlats, nextStopIndex, hasArrived, state, routeColor, nextToDepot, goingToDepot)`);
+            routeMapDrawn = true;
           }
         }
         lines.push(`}`);
-
         lines.push(``);
+
+        if (hasRouteMap) {
+          lines.push(`function DrawRouteMap(g, routePlats, nextStopIndex, hasArrived, state, routeColor, nextToDepot, goingToDepot) {`);
+          lines.push(``);
+          lines.push(`  g.setColor(Color(routeColor));`);
+          lines.push(`  g.fillRect(${routeX}, ${routeY}, ${routeW}, ${routeH});`);
+          lines.push(``);
+          lines.push(`  let stnGap = 0;`);
+          lines.push(`  let stnTextLimit = ${screenW};`);
+          lines.push(`  stnGap = ${routeW} / (routePlats.length - 1);`);
+          lines.push(`  stnTextLimit = 0.95 * stnGap;`);
+          //TO-DO: first station changes
+          //lines.push(`  for (let i = hasArrived ? nextStopIndex : nextStopIndex - 1, a = 0; i <= routePlats.length - 1; i++, a += stnGap) {`);
+          lines.push(`  for (let i = 0, a = 0; i <= routePlats.length - 1; i++, a += stnGap) {`);
+          lines.push(``);
+          lines.push(`    if (a >= ${routeX} + ${routeW})`);
+          lines.push(`    break;`);
+          lines.push(``);
+
+          lines.push(`    if (routePlats[i] === undefined || routePlats[i] === null)`);
+          lines.push(`    continue;`);
+          lines.push(`    let next = "";`);
+          lines.push(`    let nextZh = "";`);
+          lines.push(`    let nextEn = "";`);
+          lines.push(`    next = routePlats[i].station.name;`);
+          lines.push(`    nextZh = TextUtil.getCjkParts(next);`);
+          lines.push(`    nextEn = TextUtil.getNonCjkParts(next);`);
+          lines.push(``);
+
+          lines.push(`  g.setColor(Color.decode("${routeMapStnFill}"));`);
+          lines.push(`  g.fillOval(${routeX - 15} + a, ${routeY - (30 - routeH) / 2}, 30, 30);`);
+
+          //highlight next / current station
+          lines.push(`  g.setColor(Color.decode("#f5c542"));`);
+          lines.push(`  g.fillOval(${routeX - 15} + stnGap * nextStopIndex, ${routeY - (30 - routeH) / 2}, 30, 30);`);
+
+          lines.push(`  let routeMapStnStroke = new BasicStroke(5);`);
+          lines.push(`  g.setStroke(routeMapStnStroke);`);
+          lines.push(`  g.setColor(Color.decode("${routeMapStnOutline}"));`);
+          lines.push(`  g.drawOval(${routeX - 15} + a, ${routeY - (30 - routeH) / 2}, 30, 30);`);
+          lines.push(``);
+
+          lines.push(`  g.setColor(Color.decode("${routeMapTextFill}"));`);
+          lines.push(`  g.setFont(Resources.getSystemFont("Noto Sans").deriveFont(0, 30));`);
+          lines.push(`  let nextZhY = 0;`);
+          lines.push(`  nextZhY = ${routeY} + 80;`);
+          lines.push(`  AlignText(g, nextZh, ${routeX - 15} + a + 15, nextZhY, stnTextLimit, "center");`);
+          lines.push(`  g.setFont(Resources.getSystemFont("Noto Sans").deriveFont(0, 20));`);
+          lines.push(`  AlignText(g, nextEn, ${routeX - 15} + a + 15, nextZhY + 40, stnTextLimit, "center");`);
+
+          lines.push(`  }`);
+          lines.push(`}`);
+          lines.push(``);
+        }
+
+        lines.push(`function AlignText(g, text, x, y, xLimit, align) {`);
+        lines.push(`  let xNew = 0;`);
+        lines.push(`  let yNew = 0;`);
+        lines.push(`  widthNow = g.getFontMetrics().stringWidth(text);`);
+        lines.push(``);
+        lines.push(`  if (xLimit > 0 && widthNow > xLimit) {`);
+        lines.push(`    transform0 = g.getTransform();`);
+        lines.push(`    g.scale(xLimit / widthNow, 1);`);
+        lines.push(`    x /= xLimit / widthNow;`);
+        lines.push(`  }`);
+        lines.push(``);
+        lines.push(`  widthNew = g.getFontMetrics().stringWidth(text);`);
+        lines.push(`  if (align === "center")`);
+        lines.push(`    xNew = x - widthNew / 2;`);
+        lines.push(`  else if (align === "right")`);
+        lines.push(`    xNew = x - widthNew;`);
+        lines.push(`  else`);
+        lines.push(`  xNew = x;`);
+        lines.push(``);
+        lines.push(`  yNew = y;`);
+        lines.push(``);
+        lines.push(`  g.drawString(text, xNew, yNew);`);
+        lines.push(``);
+        lines.push(`  if (xLimit > 0 && widthNow > xLimit) {`);
+        lines.push(`    g.scale(1 / (xLimit / widthNow), 1);`);
+        lines.push(`    g.setTransform(transform0);`);
+        lines.push(`  }`);
+        lines.push(`}`);
+        lines.push(``);
+
         lines.push(``);
         lines.push(``);
 
@@ -3393,26 +3562,40 @@
 
         const lines = [];
         //export c++ code
+        lines.push(`//接线示例，因开发板型号而异，`);
+        lines.push(`//具体可前往：https://docs.arduino.cc/hardware/`);
+        lines.push(`//搜索您的开发板型号，并查看Pinout`);
+        lines.push(`//SSD1306 pin SDA --- Arduino Nano pin A4`);
+        lines.push(`//SSD1306 pin SCL --- Arduino Nano pin A5`);
+        lines.push(`//SSD1306 pin VCC --- Arduino Nano pin 3V3`);
+        lines.push(`//SSD1306 pin GND --- Arduino Nano pin GND`);
+        lines.push(``);
+
         lines.push(`#include "ssd1306.h"`);
         lines.push(`#include <PCM.h>`);
         lines.push(``);
+
         lines.push(`const unsigned char graphics[] PROGMEM = {`);
-        lines.push(`  //这是图形代码：如果你不用ssd1306电显，可以只用这块代码。`);
+        lines.push(`  //这是像素代码：如果您不用SSD1306电显，可以只用这块代码。`);
         lines.push(`  ${parts.join(', ')}`);
         lines.push(`};`);
         lines.push(``);
+
         lines.push(`static void draw() {`);
         lines.push(`  ssd1306_drawBitmap(0, 0, ${screenW}, ${screenH}, graphics);`);
         lines.push(`}`);
         lines.push(``);
+
         lines.push(`void setup() {`);
         lines.push(`  ssd1306_${screenW}x${screenH}_i2c_init();`);
         lines.push(`}`);
         lines.push(``);
+
         lines.push(`void loop() {`);
         lines.push(`  draw();`);
         lines.push(`}`);
         lines.push(``);
+
         const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
