@@ -2961,7 +2961,13 @@
         const ok = confirm('代码内显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》\n及相关专栏。\n\n请将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录。\n\n受系统安全限制，JS代码将导出至txt文件。');
         if (!ok) return;
 
-        const lines = ['//以下代码按《仙全铁模板资源包》的格式展示。'];
+        const lines = [`//This code is designed for "TranSifona Template Resource Pack",`];
+        lines.push(`//separated into main.js, info-panel.js, and formatting.js.`);
+        lines.push(`//Download the Template Pack here: https://modrinth.com/resourcepack/mtr-mod-m-train-with-infopanels/versions`);
+        lines.push(`//If you're not using the Template Pack, you may need to find required code by yourself.`);
+
+        lines.push = (`//以下代码按《仙全铁模板资源包》的格式展示，`);
+        lines.push = (`//分为3部分：main.js、info-panel.js、formatting.js。`);
         lines.push(`//模板资源包下载地址：https://modrinth.com/resourcepack/mtr-mod-m-train-with-infopanels/versions`);
         lines.push(`//如果您不用模板资源包，请自行抽取适用的代码。`);
 
@@ -2977,6 +2983,7 @@
         lines.push(``);
         lines.push(`include("info-panel.js");`);
         lines.push(``);
+        lines.push(`//LCD size and position - for details, watch:`);
         lines.push(`//显示屏尺寸与位置设置，具体代码含义请看《仙全铁MTR模组JS教程—第1集》及相关专栏`);
         lines.push(`//https://www.bilibili.com/video/BV1ZY3G6tEpa`);
         lines.push(`let infoPanelConfig = {`);
@@ -3340,6 +3347,7 @@
 
         lines.push(``);
 
+        lines.push(`//No need to modify`);
         lines.push(`//不需要修改`);
 
         const blob = new Blob([lines.join('\n')], { type: 'text/plain' });
@@ -3562,7 +3570,9 @@
 
         const lines = [];
         //export c++ code
-        lines.push(`//接线示例，因开发板型号而异，`);
+        lines.push(`//Example wiring - depends on your hardware specs`);
+        lines.push(`//Check for pinouts at: https://docs.arduino.cc/hardware/`);
+        lines.push(`//接线示例，因开发板型号而异`);
         lines.push(`//具体可前往：https://docs.arduino.cc/hardware/`);
         lines.push(`//搜索您的开发板型号，并查看Pinout`);
         lines.push(`//SSD1306 pin SDA --- Arduino Nano pin A4`);
@@ -3576,6 +3586,7 @@
         lines.push(``);
 
         lines.push(`const unsigned char graphics[] PROGMEM = {`);
+        lines.push(`  //Pixel code`);
         lines.push(`  //这是像素代码：如果您不用SSD1306电显，可以只用这块代码。`);
         lines.push(`  ${parts.join(', ')}`);
         lines.push(`};`);
@@ -3808,7 +3819,7 @@
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。');
+      alert('【已知明显问题：在部分设备导出的代码，中文部分会变成乱码】\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。');
     })();
   </script>
 </body>
