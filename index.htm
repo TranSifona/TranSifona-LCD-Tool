@@ -2797,7 +2797,7 @@
       /* ---------- export / import ---------- */
       document.getElementById('exportBtn').addEventListener('click', () => {
         const data = JSON.stringify(
-          { app: 'ShapeCanvas', version: 1, shapes, bgColor, screenW, screenH },
+          { app: 'TranSifona LCD Tool', version: 0.1, shapes, bgColor, screenW, screenH },
           (key, value) => (key === 'img' ? undefined : value),
           2
         );
@@ -2805,7 +2805,7 @@
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'shapecanvas-' + new Date().toISOString().slice(0, 10) + '.json';
+        a.download = 'lcd-canvas-' + new Date().toISOString().slice(0, 10) + '.json';
         a.click();
         URL.revokeObjectURL(url);
       });
@@ -2966,8 +2966,8 @@
         lines.push(`//Download the Template Pack here: https://modrinth.com/resourcepack/mtr-mod-m-train-with-infopanels/versions`);
         lines.push(`//If you're not using the Template Pack, you may need to find required code by yourself.`);
 
-        lines.push = (`//以下代码按《仙全铁模板资源包》的格式展示，`);
-        lines.push = (`//分为3部分：main.js、info-panel.js、formatting.js。`);
+        lines.push(`//以下代码按《仙全铁模板资源包》的格式展示，`);
+        lines.push(`//分为3部分：main.js、info-panel.js、formatting.js。`);
         lines.push(`//模板资源包下载地址：https://modrinth.com/resourcepack/mtr-mod-m-train-with-infopanels/versions`);
         lines.push(`//如果您不用模板资源包，请自行抽取适用的代码。`);
 
@@ -3244,7 +3244,7 @@
               if (DYNAMIC_TEXT_VALUES.has(s.text))
                 lines.push(`  AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
               else
-                lines.push(`  AlignText(g, "${s.text}"", ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
+                lines.push(`  AlignText(g, "${s.text}", ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
             }
           }
 
