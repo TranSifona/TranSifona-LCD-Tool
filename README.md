@@ -1,5 +1,8 @@
 # TranSifona LCD Tool
-A web app for drawing LCD content for Minecraft MTR mod and SSD1306 LCD display
+A web app for drawing LCD content for Minecraft MTR mod and some hardware LCD display.  
+**Only Simplified Chinese is available for now. More languages will be added later.**
+  
+<img width="1919" height="554" alt="line-web" src="https://github.com/user-attachments/assets/ca1c5d03-9b53-4e53-ad7e-cda9dc9cdf92" />
 
 # How to use
 - Go to https://transifona.github.io/TranSifona-LCD-Tool/
@@ -22,5 +25,7 @@ A web app for drawing LCD content for Minecraft MTR mod and SSD1306 LCD display
 > Bottom: a blank space that shows "Welcome to my app"
 - Currently, UI/UX part are mainly AI generated, while the logic for exporting JS code and C++ code are mainly written by human
 
-# Special thanks to
-- Chito Wong, creator of Rail Map Generator https://github.com/wongchito
+# Credits
+
+- Chito Wong, creator of Rail Map Generator (https://github.com/wongchito)
+- Jonathan Ho, creator of Minecraft Transit Railway Mod (https://github.com/jonafanho)
