@@ -2783,7 +2783,7 @@
         if (shapes.length === 0) return;
 
         const ok = confirm(
-          '您可以撤销此操作，但是建议您先导出画板工程文件。\n确定清空画板？'
+          '您的作品可能无法复原，建议您先导出画板工程文件。\n确定现在清空画板？'
         );
         if (!ok) return;
 
@@ -2821,7 +2821,7 @@
       const rmgFileInput = document.getElementById('rmgFileInput');
 
       function importFromRMG() {
-        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不支持MTR4\n\n游戏内显示屏站名颜色\n取决于画板最左边的站名颜色。');
+        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不能修改路线图位置和外观，以下除外：\n游戏内路线图站名颜色取决于画板最左边的站名颜色。');
         rmgFileInput.click();
       }
       document.getElementById('importFromRmgBtn').addEventListener('click', importFromRMG);
@@ -2958,7 +2958,7 @@
       //export js
       document.getElementById('exportJsBtn').addEventListener('click', () => {
 
-        const ok = confirm('代码内显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》\n及相关专栏。\n\n请将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录。\n\n受系统安全限制，JS代码将导出至txt文件。');
+        const ok = confirm('代码内显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》和相关专栏。\n\n请将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录。\n\n受系统安全限制，JS代码将导出至.txt文件。');
         if (!ok) return;
 
         const lines = [`//This code is designed for "TranSifona Template Resource Pack",`];
@@ -3819,7 +3819,7 @@
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n- 路线图不支持MTR4\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。');
+      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n- 使用触屏时，部分图形编辑功能不可用\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。');
     })();
   </script>
 </body>
