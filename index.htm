@@ -2028,18 +2028,26 @@ Managed by TranSifona (https://github.com/TranSifona)
             + '<button data-action="del" title="删除图层">' + I.trash + '</button>'
             + '</span>'
             + '</div>'
+
             + ((s.type === 'image') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取图片文件数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
             + ((s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码对文字排版">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
             + ((isFillDynamic || isOutlineDynamic || isDynamicText(s)) ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
             + ((hasTextFill && s.group === 'routeMap' && s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
+
             + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="设置字体为Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}">g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}")</div>`) : '')
             + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="字体大小${s.fontSize}">.deriveFont(0, ${s.fontSize}));</div>`) : '')
+
             + (s.type === 'image' ? (`<div class="layer-line2 tooltip" data-tooltip="显示图片（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.drawImage(图片变量（略）, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);</div>`) : '')
+
             + (hasFill ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isFillDynamic ? '与路线色一致' : s.color}">g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.color}"`)}));</div>`) : '')
             + (hasShapeFill ? (`<div class="layer-line2 tooltip" data-tooltip="填充${s.type === 'rect' ? '长方形' : '椭圆形'}（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
+
             + ((s.group !== 'routeMap' && !isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, "${s.text}", ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
             + ((s.group !== 'routeMap' && isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
             + ((s.group === 'routeMap' && s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, 车站名称（略）, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
+
+            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="创建轮廓变量myStroke，宽度为${s.strokeWidth}">let myStroke = new BasicStroke(${s.strokeWidth});</div>`) : '')
+            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用轮廓变量myStroke">g.setStroke(myStroke);</div>`) : '')
             + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isOutlineDynamic ? '与路线色一致' : s.outlineColor}">g.setColor(Color${isOutlineDynamic ? '(routeColor' : (`.decode("${s.outlineColor}"`)}));</div>`) : '')
             + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="绘制${s.type === 'rect' ? '长方形' : '椭圆形'}轮廓（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
             + (isDynamicText(s) ? getDynamicTextOptionsHTML(s) : '')
