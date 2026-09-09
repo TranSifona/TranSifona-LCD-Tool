@@ -1,6 +1,6 @@
 <!--
-TranSifona LCD Tool v0.1
-仙全铁显示屏工具v0.1
+TranSifona LCD Tool v0.1.1
+仙全铁显示屏工具v0.1.1
 
 This project was created with generative AI assistance
 此项目使用生成式AI技术辅助制作
@@ -1259,7 +1259,7 @@ Managed by TranSifona (https://github.com/TranSifona)
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer>版本：0.1 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
+  <footer>版本：0.1.1 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
       style="color: #87a39f;">Github代码库</a>反馈
   </footer>
 
@@ -3054,19 +3054,19 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(`    let nextStopIndex = 0;`);
         lines.push(`    let distancePassed = 0;`);
         lines.push(`    let speed = 0;`);
-        lines.push(`    if (routePlats !== undefined && routePlats !== null && routePlats[routePlats.size() - 1] !== undefined && routePlats[routePlats.size() - 1] !== null) {`);
+        lines.push(`    if (routePlats != undefined && routePlats[routePlats.size() - 1] != undefined) {`);
         lines.push(`      terminus = routePlats[routePlats.size() - 1].station.name;`);
         lines.push(`      routeName = routePlats[routePlats.size() - 1].route.name;`);
         lines.push(`      routeColor = Color(routePlats[routePlats.size() - 1].route.color);`);
         lines.push(`    }`);
 
-        lines.push(`    if (train.getThisRoutePlatformsNextIndex() !== undefined && train.getThisRoutePlatformsNextIndex() !== null)`);
+        lines.push(`    if (train.getThisRoutePlatformsNextIndex() != undefined)`);
         lines.push(`      nextStopIndex = train.getThisRoutePlatformsNextIndex();`);
-        lines.push(`    if (train.railProgress() !== undefined && train.railProgress() !== null)`);
+        lines.push(`    if (train.railProgress() != undefined)`);
         lines.push(`      distancePassed = train.railProgress();`);
         lines.push(``);
         lines.push(`    let hasArrived = false;`);
-        lines.push(`    if (routePlats !== undefined && routePlats !== null && nextStopIndex < routePlats.size()) {`);
+        lines.push(`    if (routePlats != undefined && nextStopIndex < routePlats.size()) {`);
         lines.push(`      distanceOfPlatFromStart = routePlats.get(nextStopIndex).distance;`);
         lines.push(`      hasArrived = (distancePassed >= distanceOfPlatFromStart - 50 && distancePassed <= distanceOfPlatFromStart);`);
         lines.push(`    }`);
@@ -3076,8 +3076,8 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(`    let allPlatsNextIndex = train.getAllPlatformsNextIndex();`);
         lines.push(`    let isNextToDepot = false;`);
         lines.push(`    let isGoingToDepot = false;`);
-        lines.push(`    nextToDepot = ((allPlatsNextIndex === allPlats.length - 1) && hasArrived);`);
-        lines.push(`    goingToDepot = (allPlatsNextIndex > allPlats.length - 1);`);
+        lines.push(`    isNextToDepot = ((allPlatsNextIndex === allPlats.size() - 1) && hasArrived);`);
+        lines.push(`    isGoingToDepot = (allPlatsNextIndex > allPlats.size() - 1);`);
         lines.push(`    DrawInfoPanel(g, state, routePlats, nextStopIndex, hasArrived, terminus, routeName, routeColor, speed, isNextToDepot, isGoingToDepot);`);
         lines.push(`    state.infoPanel.upload();`);
         lines.push(`  }`);
@@ -3121,7 +3121,7 @@ Managed by TranSifona (https://github.com/TranSifona)
 
         lines.push(`  let routeNameZh = "";`);
         lines.push(`  let routeNameEn = "";`);
-        lines.push(`  if (routeName !== undefined && routeName !== null) {`);
+        lines.push(`  if (routeName != undefined) {`);
         lines.push(`    routeNameZh = TextUtil.getCjkParts(routeName);`);
         lines.push(`    routeNameEn = TextUtil.getNonCjkParts(routeName);`);
         lines.push(`  }`);
@@ -3130,7 +3130,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(`  let dest = "";`);
         lines.push(`  let destZh = "";`);
         lines.push(`  let destEn = "";`);
-        lines.push(`  if (terminus !== undefined && terminus !== null) {`);
+        lines.push(`  if (terminus != undefined) {`);
         lines.push(`    dest = terminus;`);
         lines.push(`    destZh = TextUtil.getCjkParts(dest);`);
         lines.push(`    destEn = TextUtil.getNonCjkParts(dest);`);
@@ -3143,19 +3143,15 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(`  let next2 = "";`);
         lines.push(`  let next2Zh = "";`);
         lines.push(`  let next2En = "";`);
-        lines.push(`  if (routePlats[nextStopIndex] !== undefined && routePlats[nextStopIndex] !== null && routePlats[nextStopIndex + 1] !== undefined && routePlats[nextStopIndex + 1] !== null) {`);
+        lines.push(`  if (routePlats[nextStopIndex] != undefined) {`);
         lines.push(`    next = routePlats[nextStopIndex].station.name;`);
         lines.push(`    nextZh = TextUtil.getCjkParts(next);`);
         lines.push(`    nextEn = TextUtil.getNonCjkParts(next);`);
-        lines.push(`    next2 = routePlats[nextStopIndex + 1].station.name;`);
-        lines.push(`    next2Zh = hasArrived ? TextUtil.getCjkParts(next2) : "";`);
-        lines.push(`    next2En = hasArrived ? TextUtil.getNonCjkParts(next2) : "";`);
-        lines.push(`  }`);
-        lines.push(``);
-
-        lines.push(`  if (goingToDepot) {`);
-        lines.push(`    destZh = nextZh = "車廠";`);
-        lines.push(`    destEn = nextEn = "Depot";`);
+        lines.push(`    if (routePlats[nextStopIndex + 1] != undefined) {`);
+        lines.push(`      next2 = routePlats[nextStopIndex + 1].station.name;`);
+        lines.push(`      next2Zh = hasArrived ? TextUtil.getCjkParts(next2) : "";`);
+        lines.push(`      next2En = hasArrived ? TextUtil.getNonCjkParts(next2) : "";`);
+        lines.push(`    }`);
         lines.push(`  }`);
         lines.push(``);
 
@@ -3167,6 +3163,14 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(`  nextTxEn = hasArrived ? "Now at" : "Next is";`);
         lines.push(`  next2TxZh = hasArrived ? "下一站" : "";`);
         lines.push(`  next2TxEn = hasArrived ? "Next is" : "";`);
+        lines.push(``);
+
+        lines.push(`  if (isGoingToDepot || isNextToDepot) {`);
+        lines.push(`    destZh = "車廠";`);
+        lines.push(`    destEn = "Depot";`);
+        lines.push(`    nextZh = "車廠";`);
+        lines.push(`    nextEn = "Depot";`);
+        lines.push(`  }`);
         lines.push(``);
 
         lines.push(`  speed *= 72;`);
@@ -3293,7 +3297,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           lines.push(`    break;`);
           lines.push(``);
 
-          lines.push(`    if (routePlats[i] === undefined || routePlats[i] === null)`);
+          lines.push(`    if (routePlats[i] == undefined)`);
           lines.push(`    continue;`);
           lines.push(`    let next = "";`);
           lines.push(`    let nextZh = "";`);
@@ -3838,7 +3842,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n- 使用触屏时，部分图形编辑功能不可用\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。\n\n此工具使用生成式AI技术辅助创作。');
+      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n- 使用触屏时，部分图形编辑功能不可用\n\n【v0.1.1更新】\n图层栏增加stroke示例代码；\n修改了一些输出JS代码，避免终点站不显示。\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。\n\n此工具使用生成式AI技术辅助创作。');
     })();
   </script>
 </body>
