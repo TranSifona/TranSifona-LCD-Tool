@@ -1,6 +1,6 @@
 <!--
-TranSifona LCD Tool v0.1.2
-仙全铁显示屏工具v0.1.2
+TranSifona LCD Tool v0.1.3
+仙全铁显示屏工具v0.1.3
 
 This project was created with generative AI assistance
 此项目使用生成式AI技术辅助制作
@@ -267,8 +267,13 @@ Managed by TranSifona (https://github.com/TranSifona)
       border-color: #33405a;
     }
 
-    #outlineWidthInput {
-      width: 50px;
+    #outlineWidthInput,
+    #shapeXInput,
+    #shapeYInput,
+    #shapeWInput,
+    #shapeHInput,
+    #fontSizeInput {
+      width: 64px;
       background: var(--panel-2);
       color: var(--text);
       border: 1px solid var(--border);
@@ -279,8 +284,39 @@ Managed by TranSifona (https://github.com/TranSifona)
     }
 
     #outlineWidthInput:hover,
-    #outlineWidthInput:focus {
+    #outlineWidthInput:focus,
+    #shapeXInput:hover,
+    #shapeXInput:focus,
+    #shapeYInput:hover,
+    #shapeYInput:focus,
+    #shapeWInput:hover,
+    #shapeWInput:focus,
+    #shapeHInput:hover,
+    #shapeHInput:focus,
+    #fontSizeInput:hover,
+    #fontSizeInput:focus {
       border-color: #33405a;
+    }
+
+    #colorDisplayBtn:disabled,
+    #outlineColorDisplayBtn:disabled,
+    #outlineWidthInput:disabled,
+    #shapeXInput:disabled,
+    #shapeYInput:disabled,
+    #shapeWInput:disabled,
+    #shapeHInput:disabled,
+    #fontSizeInput:disabled,
+    #fontSelect:disabled,
+    #alignTools .align-btn:disabled {
+      opacity: .35;
+      cursor: default;
+      pointer-events: none;
+    }
+
+    #alignTools .align-btn:disabled.active {
+      color: var(--muted);
+      background: transparent;
+      box-shadow: none;
     }
 
     .preset {
@@ -580,7 +616,7 @@ Managed by TranSifona (https://github.com/TranSifona)
 
     main {
       display: grid;
-      grid-template-columns: 360px 1fr;
+      grid-template-columns: 275px 1fr 250px;
       overflow: hidden;
       min-height: 0
     }
@@ -591,6 +627,78 @@ Managed by TranSifona (https://github.com/TranSifona)
       display: flex;
       flex-direction: column;
       min-height: 0;
+    }
+
+    /* ===== Right panel ===== */
+    .right-panel {
+      background: var(--panel);
+      border-right: 0;
+      border-left: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      min-height: 0;
+    }
+
+    .inspector-content {
+      padding: 0 16px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow-y: auto;
+    }
+
+    .inspector-section {
+      background: var(--panel-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .inspector-title {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .control-row>.color-label {
+      min-width: 88px;
+    }
+
+    .right-panel .file-menu-wrap {
+      position: relative;
+    }
+
+    .right-panel .file-menu {
+      right: 0;
+      left: auto;
+    }
+
+    .code-box {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      min-height: 70px;
+      max-height: 280px;
+      overflow: auto;
     }
 
     .panel-head {
@@ -606,62 +714,6 @@ Managed by TranSifona (https://github.com/TranSifona)
       letter-spacing: 1.4px;
       text-transform: uppercase;
       color: var(--muted)
-    }
-
-    .count-badge {
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--accent);
-      background: var(--accent-soft);
-      border-radius: 20px;
-      padding: 2px 9px;
-    }
-
-    .panel-head-right {
-      display: flex;
-      align-items: center;
-      gap: 8px
-    }
-
-    .order-toggle {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-      border: 1px solid var(--border);
-      background: var(--panel-2);
-      color: var(--muted);
-      font: 700 10px "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      letter-spacing: .5px;
-      padding: 4px 9px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all .15s ease;
-    }
-
-    .order-toggle:hover {
-      color: var(--text);
-      border-color: #33405a
-    }
-
-    .order-toggle svg {
-      transition: transform .25s ease;
-      flex: none
-    }
-
-    .order-toggle.reversed svg {
-      transform: rotate(180deg)
-    }
-
-    .order-tag {
-      font-size: 10px;
-      color: var(--muted);
-      padding: 2px 16px;
-      letter-spacing: .5px;
-      opacity: .8
-    }
-
-    .order-tag.bottom {
-      margin-top: auto
     }
 
     #layerList {
@@ -1022,60 +1074,6 @@ Managed by TranSifona (https://github.com/TranSifona)
 
     <div class="spacer"></div>
 
-    <div class="colors" id="colorPresets">
-      <span class="color-label">填充色</span>
-      <div class="file-menu-wrap" id="colorMenuWrap">
-        <button class="color-display" id="colorDisplayBtn" style="background:#564c61" title="" aria-haspopup="true"
-          aria-expanded="false"></button>
-        <div class="file-menu color-dropdown" id="colorMenu"></div>
-      </div>
-
-      <span class="color-label">轮廓色</span>
-      <div class="file-menu-wrap" id="outlineColorMenuWrap">
-        <button class="color-display" id="outlineColorDisplayBtn" style="background:#0faa9b" title=""
-          aria-haspopup="true" aria-expanded="false"></button>
-
-        <div class="file-menu color-dropdown" id="outlineColorMenu"></div>
-      </div>
-    </div>
-
-    <div class="divider-invisible"></div>
-
-    <span class="color-label">轮廓宽度</span>
-    <input id="outlineWidthInput" type="text" inputmode="numeric" value="10" title="">
-
-    <div class="divider-invisible"></div>
-
-    <span class="color-label">字体</span>
-    <select id="fontSelect" title="">
-      <option value="sans" selected>无衬线</option>
-      <option value="serif">有衬线</option>
-    </select>
-
-    <div class="divider-invisible"></div>
-
-    <span class="color-label">文字对齐</span>
-    <div class="tools" id="alignTools">
-      <button class="align-btn active" data-align="left" title="左对齐">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
-          stroke-linecap="round">
-          <path d="M2 3.5h12M2 8h7M2 12.5h10" />
-        </svg>
-      </button>
-      <button class="align-btn" data-align="center" title="居中对齐">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
-          stroke-linecap="round">
-          <path d="M2 3.5h12M4.5 8h7M3 12.5h10" />
-        </svg>
-      </button>
-      <button class="align-btn" data-align="right" title="右对齐">
-        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
-          stroke-linecap="round">
-          <path d="M2 3.5h12M7 8h7M4 12.5h10" />
-        </svg>
-      </button>
-    </div>
-
     <div class="divider"></div>
 
     <div class="file-menu-wrap">
@@ -1235,7 +1233,8 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- LEFT: layer panel -->
     <aside>
       <div class="panel-head">
-        <h2>图层（JS代码）</h2>
+        <h2>图层<br />（JS代码预览移到右侧栏了）</h2>
+        <!--
         <div class="panel-head-right">
           <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
             <span>排序方式：</span>
@@ -1243,6 +1242,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           </button>
           <span class="count-badge" id="layerCount"></span>
         </div>
+      -->
       </div>
       <div class="order-tag" id="orderTagTop"></div>
       <ul id="layerList"></ul>
@@ -1250,17 +1250,115 @@ Managed by TranSifona (https://github.com/TranSifona)
       <div class="order-tag bottom" id="orderTagBottom"></div>
     </aside>
 
-    <!-- RIGHT: canvas -->
+    <!-- CENTER: canvas -->
     <section class="canvas-wrap" id="canvasWrap">
       <canvas id="cv"></canvas>
 
       <div class="canvas-hint" id="canvasHint">
       </div>
     </section>
+
+    <!-- RIGHT: settings -->
+    <aside class="right-panel" id="rightPanel">
+      <div class="panel-head">
+        <h2>图形属性</h2>
+      </div>
+
+      <div class="inspector-content">
+        <section class="inspector-section">
+          <div class="inspector-title">参数</div>
+
+          <div class="control-row">
+            <span class="color-label">填充色</span>
+            <div class="file-menu-wrap" id="colorMenuWrap">
+              <button class="color-display" id="colorDisplayBtn" style="background:#564c61" title=""
+                aria-haspopup="true" aria-expanded="false"></button>
+              <div class="file-menu color-dropdown" id="colorMenu"></div>
+            </div>
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">轮廓色</span>
+            <div class="file-menu-wrap" id="outlineColorMenuWrap">
+              <button class="color-display" id="outlineColorDisplayBtn" style="background:#0faa9b" title=""
+                aria-haspopup="true" aria-expanded="false"></button>
+
+              <div class="file-menu color-dropdown" id="outlineColorMenu"></div>
+            </div>
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">轮廓宽度</span>
+            <input id="outlineWidthInput" type="text" inputmode="numeric" value="10" title="">
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">左边X坐标</span>
+            <input id="shapeXInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">Y坐标（文字：左下；其它：左上）</span>
+            <input id="shapeYInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">宽</span>
+            <input id="shapeWInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">高</span>
+            <input id="shapeHInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
+          </div>
+
+          <div class="control-row">
+            <span class="color-label">文字大小</span>
+            <input id="fontSizeInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
+          </div>
+
+
+          <div class="control-row">
+            <span class="color-label">字体</span>
+            <select id="fontSelect" title="">
+              <option value="sans" selected>无衬线</option>
+              <option value="serif">有衬线</option>
+            </select>
+          </div>
+
+          <div class="control-row"></div>
+          <div class="tools" id="alignTools">
+            <button class="align-btn active" data-align="left" title="左对齐">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round">
+                <path d="M2 3.5h12M2 8h7M2 12.5h10" />
+              </svg>
+            </button>
+            <button class="align-btn" data-align="center" title="居中对齐">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round">
+                <path d="M2 3.5h12M4.5 8h7M3 12.5h10" />
+              </svg>
+            </button>
+            <button class="align-btn" data-align="right" title="右对齐">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
+                stroke-linecap="round">
+                <path d="M2 3.5h12M7 8h7M4 12.5h10" />
+              </svg>
+            </button>
+          </div>
+        </section>
+
+        <section class="inspector-section">
+          <div class="inspector-title">JS代码预览<br />（完整代码请到文件设置导出）</div>
+          <div id="selectedCode" class="code-box">请先选择图形</div>
+        </section>
+      </div>
+    </aside>
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer>版本：0.1.2 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
+  <footer>版本：0.1.3 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
       style="color: #87a39f;">Github代码库</a>反馈
   </footer>
 
@@ -1270,6 +1368,8 @@ Managed by TranSifona (https://github.com/TranSifona)
 
       /* ---------- states ---------- */
       let scale = 0.5;
+      let offsetX = 0;
+      let offsetY = 0;
 
       let screenW = 2000;
       let screenH = 400;
@@ -1280,8 +1380,6 @@ Managed by TranSifona (https://github.com/TranSifona)
       let bgColor = 'transparent';
       let fillColor = '#564c61';
       let outlineColor = '#0faa9b';
-
-      let layersTopFirst = true;
 
       let uid = 1;
       const counters = { rect: 0, oval: 0, image: 0, text: 0 };
@@ -1361,6 +1459,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         if (s && s.outline) {
           s.strokeWidth = outlineWidth;
           render();
+          renderSelectedCode();
         }
       });
 
@@ -1372,6 +1471,198 @@ Managed by TranSifona (https://github.com/TranSifona)
           pushHistory();
         }
       });
+
+      /* ---------- selected shape size / font size inputs ---------- */
+      const shapeWInput = document.getElementById('shapeWInput');
+      const shapeHInput = document.getElementById('shapeHInput');
+      const fontSizeInput = document.getElementById('fontSizeInput');
+
+      function parseSizeValue(v) {
+        const n = parseFloat(v);
+        return Number.isFinite(n) ? n : null;
+      }
+
+      function syncSizeInputs() {
+        const s = getShape(selectedId);
+
+        const isShape = !!s && s.type !== 'text';
+        const isText = !!s && s.type === 'text';
+
+        shapeWInput.disabled = !isShape;
+        shapeHInput.disabled = !isShape;
+        fontSizeInput.disabled = !isText;
+
+        if (!s) {
+          shapeWInput.value = '';
+          shapeHInput.value = '';
+          fontSizeInput.value = '';
+          return;
+        }
+
+        shapeWInput.value = String(Math.round(s.w || 0));
+        shapeHInput.value = String(Math.round(s.h || 0));
+        fontSizeInput.value = String(Math.round(s.fontSize || 0));
+      }
+
+      shapeWInput.addEventListener('input', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type === 'text') return;
+
+        const v = parseSizeValue(shapeWInput.value);
+        if (v === null || v <= 0) return;
+
+        s.w = v;
+        render();
+        renderSelectedCode();
+      });
+
+      shapeWInput.addEventListener('change', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type === 'text') return;
+
+        shapeWInput.value = String(Math.round(s.w || 0));
+        pushHistory();
+      });
+
+      shapeHInput.addEventListener('input', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type === 'text') return;
+
+        const v = parseSizeValue(shapeHInput.value);
+        if (v === null || v <= 0) return;
+
+        s.h = v;
+        render();
+        renderSelectedCode();
+      });
+
+      shapeHInput.addEventListener('change', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type === 'text') return;
+
+        shapeHInput.value = String(Math.round(s.h || 0));
+        pushHistory();
+      });
+
+      fontSizeInput.addEventListener('input', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type !== 'text') return;
+
+        const v = parseSizeValue(fontSizeInput.value);
+        if (v === null) return;
+
+        s.fontSize = Math.max(1, Math.min(2000, Math.round(v)));
+        Object.assign(s, measureText(s));
+
+        render();
+        renderSelectedCode();
+      });
+
+      fontSizeInput.addEventListener('change', () => {
+        const s = getShape(selectedId);
+        if (!s || s.type !== 'text') return;
+
+        fontSizeInput.value = String(Math.round(s.fontSize || 0));
+        pushHistory();
+      });
+
+      /* ---------- selected shape X/Y controls ---------- */
+      const shapeXInput = document.getElementById('shapeXInput');
+      const shapeYInput = document.getElementById('shapeYInput');
+
+      function parseCoordValue(value) {
+        const n = parseFloat(value);
+        return Number.isFinite(n) ? Math.round(n) : null;
+      }
+
+      function getShapePosition(s) {
+        if (!s) return { x: 0, y: 0 };
+
+        if (s.type === 'text') {
+          const box = getTextBox(s);
+          return { x: box.x, y: box.y };
+        }
+
+        return { x: s.x, y: s.y };
+      }
+
+      function setShapePosition(s, x, y) {
+        if (!s) return;
+
+        if (s.type === 'text') {
+          setTextBoxFromAlign(s, x, y);
+        } else {
+          s.x = x;
+          s.y = y;
+        }
+      }
+
+      function syncCoordInputs() {
+        const s = getShape(selectedId);
+        const enabled = !!s;
+
+        if (shapeXInput) shapeXInput.disabled = !enabled;
+        if (shapeYInput) shapeYInput.disabled = !enabled;
+
+        if (!s) {
+          if (shapeXInput) shapeXInput.value = '';
+          if (shapeYInput) shapeYInput.value = '';
+          return;
+        }
+
+        const pos = getShapePosition(s);
+
+        if (shapeXInput) shapeXInput.value = String(Math.round(pos.x || 0));
+        if (shapeYInput) shapeYInput.value = String(Math.round(pos.y || 0));
+      }
+
+      if (shapeXInput) {
+        shapeXInput.addEventListener('input', () => {
+          const s = getShape(selectedId);
+          if (!s) return;
+
+          const v = parseCoordValue(shapeXInput.value);
+          if (v === null) return;
+
+          const pos = getShapePosition(s);
+          setShapePosition(s, v, pos.y);
+
+          render();
+          renderSelectedCode();
+        });
+
+        shapeXInput.addEventListener('change', () => {
+          const s = getShape(selectedId);
+          if (!s) return;
+
+          syncCoordInputs();
+          pushHistory();
+        });
+      }
+
+      if (shapeYInput) {
+        shapeYInput.addEventListener('input', () => {
+          const s = getShape(selectedId);
+          if (!s) return;
+
+          const v = parseCoordValue(shapeYInput.value);
+          if (v === null) return;
+
+          const pos = getShapePosition(s);
+          setShapePosition(s, pos.x, v);
+
+          render();
+          renderSelectedCode();
+        });
+
+        shapeYInput.addEventListener('change', () => {
+          const s = getShape(selectedId);
+          if (!s) return;
+
+          syncCoordInputs();
+          pushHistory();
+        });
+      }
 
       /* ---------- change screen size ---------- */
       const screenWInput = document.getElementById('screenWInput');
@@ -1395,8 +1686,14 @@ Managed by TranSifona (https://github.com/TranSifona)
       scaleInput.addEventListener('input', () => {
         const v = parseFloat(scaleInput.value);
         if (!Number.isFinite(v) || v <= 0) return;
-        scale = Math.max(0.05, Math.min(5, v / 100));
-        resize();
+
+        const rect = canvas.getBoundingClientRect();
+
+        zoomAtClientPoint(
+          rect.left + rect.width / 2,
+          rect.top + rect.height / 2,
+          (v / 100) / scale
+        );
       });
 
       scaleInput.addEventListener('change', () => {
@@ -1408,7 +1705,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       const g = canvas.getContext('2d');
       const wrap = document.getElementById('canvasWrap');
       const listEl = document.getElementById('layerList');
-      const countEl = document.getElementById('layerCount');
+      //const countEl = document.getElementById('layerCount');
       const emptyEl = document.getElementById('emptyMsg');
       const hintEl = document.getElementById('canvasHint');
       const colorInput = document.getElementById('colorInput');
@@ -1513,6 +1810,59 @@ Managed by TranSifona (https://github.com/TranSifona)
         });
       }
 
+      function syncInspectorControlStates() {
+        const s = getShape(selectedId);
+        const type = s ? s.type : null;
+
+        const isRectOrOval = type === 'rect' || type === 'oval';
+        const isImage = type === 'image';
+        const isText = type === 'text';
+
+        const fillEnabled = isRectOrOval || isText;
+        const outlineEnabled = isRectOrOval;
+        const sizeEnabled = isRectOrOval || isImage;
+        const textEnabled = isText;
+        const positionEnabled = !!s;
+
+        const colorBtn = document.getElementById('colorDisplayBtn');
+        const outlineBtn = document.getElementById('outlineColorDisplayBtn');
+        const colorWrap = document.getElementById('colorMenuWrap');
+        const outlineWrap = document.getElementById('outlineColorMenuWrap');
+
+        const shapeXInput = document.getElementById('shapeXInput');
+        const shapeYInput = document.getElementById('shapeYInput');
+        const shapeWInput = document.getElementById('shapeWInput');
+        const shapeHInput = document.getElementById('shapeHInput');
+        const fontSizeInput = document.getElementById('fontSizeInput');
+
+        if (colorBtn) colorBtn.disabled = !fillEnabled;
+        if (outlineBtn) outlineBtn.disabled = !outlineEnabled;
+
+        outlineWidthInput.disabled = !outlineEnabled;
+
+        if (shapeXInput) shapeXInput.disabled = !positionEnabled;
+        if (shapeYInput) shapeYInput.disabled = !positionEnabled;
+        if (shapeWInput) shapeWInput.disabled = !sizeEnabled;
+        if (shapeHInput) shapeHInput.disabled = !sizeEnabled;
+        if (fontSizeInput) fontSizeInput.disabled = !textEnabled;
+
+        fontSelect.disabled = !textEnabled;
+
+        alignBtns.forEach(b => {
+          b.disabled = !textEnabled;
+        });
+
+        if (colorWrap && !fillEnabled) {
+          colorWrap.classList.remove('open');
+          if (colorBtn) colorBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        if (outlineWrap && !outlineEnabled) {
+          outlineWrap.classList.remove('open');
+          if (outlineBtn) outlineBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+
       function applyAlign(align) {
         textAlign = align;
 
@@ -1554,11 +1904,21 @@ Managed by TranSifona (https://github.com/TranSifona)
       const SNAP_DIST = 14;
 
       function snapEdges(b) {
-        const W = canvas.clientWidth, H = canvas.clientHeight;
-        if (Math.abs(b.x) < SNAP_DIST) b.x = 0;
-        if (Math.abs(b.y) < SNAP_DIST) b.y = 0;
-        if (Math.abs(W - (b.x + b.w)) < SNAP_DIST) b.x = W - b.w;
-        if (Math.abs(H - (b.y + b.h)) < SNAP_DIST) b.y = H - b.h;
+        const view = getViewRect();
+
+        const left = view.x;
+        const top = view.y;
+        const right = view.x + view.w;
+        const bottom = view.y + view.h;
+
+        const snapDist = SNAP_DIST / scale;
+
+        if (Math.abs(b.x - left) < snapDist) b.x = left;
+        if (Math.abs(b.y - top) < snapDist) b.y = top;
+
+        if (Math.abs(right - (b.x + b.w)) < snapDist) b.x = right - b.w;
+        if (Math.abs(bottom - (b.y + b.h)) < snapDist) b.y = bottom - b.h;
+
         return b;
       }
 
@@ -1577,7 +1937,19 @@ Managed by TranSifona (https://github.com/TranSifona)
 
       function getPos(e) {
         const r = canvas.getBoundingClientRect();
-        return { x: (e.clientX - r.left) / scale, y: (e.clientY - r.top) / scale };
+        return {
+          x: (e.clientX - r.left - offsetX) / scale,
+          y: (e.clientY - r.top - offsetY) / scale
+        };
+      }
+
+      function getViewRect() {
+        return {
+          x: -offsetX / scale,
+          y: -offsetY / scale,
+          w: canvas.clientWidth / scale,
+          h: canvas.clientHeight / scale
+        };
       }
 
       function hitHandle(px, py) {
@@ -1739,25 +2111,87 @@ Managed by TranSifona (https://github.com/TranSifona)
         redoBtn.disabled = historyIndex >= history.length - 1;
       }
 
-      /* ---------- canvas sizing ---------- */
+      /* ---------- canvas sizing / view ---------- */
+      function applyView() {
+        const dpr = window.devicePixelRatio || 1;
+
+        g.setTransform(
+          dpr * scale,
+          0,
+          0,
+          dpr * scale,
+          dpr * offsetX,
+          dpr * offsetY
+        );
+
+        render();
+      }
+
       function resize() {
         const r = wrap.getBoundingClientRect();
         const dpr = window.devicePixelRatio || 1;
+
         canvas.width = Math.max(1, Math.round(r.width * dpr));
         canvas.height = Math.max(1, Math.round(r.height * dpr));
+
         canvas.style.width = r.width + 'px';
         canvas.style.height = r.height + 'px';
-        g.setTransform(dpr * scale, 0, 0, dpr * scale, 0, 0);
-        render();
+
+        applyView();
       }
+
       new ResizeObserver(resize).observe(wrap);
 
+      /* ---------- cursor-centered wheel zoom ---------- */
+      function zoomAtClientPoint(clientX, clientY, zoomFactor) {
+        const r = canvas.getBoundingClientRect();
+
+        const sx = clientX - r.left;
+        const sy = clientY - r.top;
+
+        // World coordinate under the cursor before zoom
+        const wx = (sx - offsetX) / scale;
+        const wy = (sy - offsetY) / scale;
+
+        const oldScale = scale;
+
+        scale = Math.max(0.05, Math.min(5, scale * zoomFactor));
+
+        if (scale === oldScale) return;
+
+        // Keep the same world coordinate under the cursor after zoom
+        offsetX = sx - wx * scale;
+        offsetY = sy - wy * scale;
+
+        scaleInput.value = String(Math.round(scale * 100));
+
+        applyView();
+      }
+
+      canvas.addEventListener('wheel', e => {
+        e.preventDefault();
+
+        if (e.deltaY === 0) return;
+
+        // Fixed-step zoom.
+        // If you prefer smoother trackpad zoom, see note below.
+        const zoomFactor = e.deltaY < 0 ? 1.1 : 1 / 1.1;
+
+        zoomAtClientPoint(e.clientX, e.clientY, zoomFactor);
+      }, { passive: false });
+
       /* ---------- rendering ---------- */
-      function drawGrid(w, h) {
+      function drawGrid(x, y, w, h) {
         g.fillStyle = 'rgba(255,255,255,0.25)';
-        for (let x = 0; x < w; x += 50)
-          for (let y = 0; y < h; y += 50)
-            g.fillRect(x, y, 5, 5);
+
+        const startX = Math.floor(x / 50) * 50;
+        const startY = Math.floor(y / 50) * 50;
+
+        for (let gx = startX; gx < x + w; gx += 50) {
+          for (let gy = startY; gy < y + h; gy += 50) {
+            g.fillRect(gx, gy, 5, 5);
+          }
+        }
       }
 
       function drawFrame(w, h) {
@@ -1886,9 +2320,14 @@ Managed by TranSifona (https://github.com/TranSifona)
       }
 
       function render() {
-        const w = canvas.clientWidth / scale, h = canvas.clientHeight / scale;
-        g.clearRect(0, 0, w, h);
-        drawGrid(w, h);
+        const w = canvas.clientWidth / scale;
+        const h = canvas.clientHeight / scale;
+
+        const vx = -offsetX / scale;
+        const vy = -offsetY / scale;
+
+        g.clearRect(vx, vy, w, h);
+        drawGrid(vx, vy, w, h);
         drawFrame(screenW, screenH);
 
         for (const s of shapes)
@@ -1937,8 +2376,8 @@ Managed by TranSifona (https://github.com/TranSifona)
             const label = Math.round(n.w) + ' × ' + Math.round(n.h);
             g.font = '600 25px "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif';
             const tw = g.measureText(label).width;
-            const lx = Math.max(5, Math.min(n.x, w - tw - 10));
-            const ly = Math.max(20, n.y - 40);
+            const lx = Math.max(vx + 5, Math.min(n.x, vx + w - tw - 10));
+            const ly = Math.max(vy + 20, n.y - 40);
 
             g.fillStyle = 'rgba(10,13,18,0.8)';
             g.fillRect(lx - 5, ly - 4, tw + 10, 29);
@@ -1958,10 +2397,9 @@ Managed by TranSifona (https://github.com/TranSifona)
       function renderLayerList() {
         listEl.innerHTML = '';
         const idxs = shapes.map((_, i) => i);
-        if (layersTopFirst) idxs.reverse();
 
         const bgLi = makeBgLayer();
-        if (!layersTopFirst) listEl.appendChild(bgLi);
+        listEl.appendChild(bgLi);
 
         function getDynamicTextOptionsHTML(s) {
           const opts = [
@@ -2004,53 +2442,18 @@ Managed by TranSifona (https://github.com/TranSifona)
           li.className = 'layer' + (s.id === selectedId ? ' selected' : '') + (s.visible ? '' : ' hidden-layer');
           li.dataset.id = s.id;
 
-          const roundX = s.x.toFixed(0),
-            roundY = s.y.toFixed(0),
-            roundW = s.w.toFixed(0),
-            roundH = s.h.toFixed(0);
-
-          const hasFill = (s.color && s.color !== 'transparent' && s.type !== 'image');
-          const hasShapeFill = (s.color && s.color !== 'transparent' && s.type !== 'image' && s.type !== 'text');
-          const hasTextFill = (s.color && s.color !== 'transparent' && s.type === 'text');
-          const isFillDynamic = (s.color === 'dynamic');
-          const hasOutline = (s.outlineColor && s.outlineColor !== 'transparent' && s.type !== 'image' && s.type !== 'text');
-          const isOutlineDynamic = (s.outlineColor === 'dynamic');
-
           li.innerHTML
             = '<div class="layer-line1">'
             + '<span class="swatch" style="background:' + resolveColor(s.color) + '"></span>'
             + '<span class="licon">' + (s.type === 'rect' ? I.rect : s.type === 'oval' ? I.oval : s.type === 'image' ? I.image : I.text) + '</span>'
             + '<span class="lname">' + s.name + '</span>'
             + '<span class="lbtns">'
-            + '<button data-action="copy" data-action="copy" title="复制这些代码">' + I.copy + '</button>'
             + '<button data-action="up" title="移到前一个图层">' + I.up + '</button>'
             + '<button data-action="down" title="移到后一个图层">' + I.down + '</button>'
             + '<button data-action="vis" title="隐藏图层">' + (s.visible ? I.eye : I.eyeOff) + '</button>'
             + '<button data-action="del" title="删除图层">' + I.trash + '</button>'
             + '</span>'
             + '</div>'
-
-            + ((s.type === 'image') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取图片文件数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
-            + ((s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码对文字排版">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
-            + ((isFillDynamic || isOutlineDynamic || isDynamicText(s)) ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
-            + ((hasTextFill && s.group === 'routeMap' && s.type === 'text') ? (`<div class="layer-line2 tooltip" data-tooltip="需要额外代码读取MTR模组数据">//需要额外代码，请到文件设置导出JS代码查看。</div>`) : '')
-
-            + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="设置字体为Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}">g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}")</div>`) : '')
-            + ((s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="字体大小${s.fontSize}">.deriveFont(0, ${s.fontSize}));</div>`) : '')
-
-            + (s.type === 'image' ? (`<div class="layer-line2 tooltip" data-tooltip="显示图片（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.drawImage(图片变量（略）, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);</div>`) : '')
-
-            + (hasFill ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isFillDynamic ? '与路线色一致' : s.color}">g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.color}"`)}));</div>`) : '')
-            + (hasShapeFill ? (`<div class="layer-line2 tooltip" data-tooltip="填充${s.type === 'rect' ? '长方形' : '椭圆形'}（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
-
-            + ((s.group !== 'routeMap' && !isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, "${s.text}", ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
-            + ((s.group !== 'routeMap' && isDynamicText(s) && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
-            + ((s.group === 'routeMap' && s.type === 'text' && hasTextFill) ? (`<div class="layer-line2 tooltip" data-tooltip="显示文字（${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下x=${roundX}，${s.align === 'left' ? '左' : s.align === 'center' ? '中' : '右'}下y=${roundY}）">AlignText(g, 车站名称（略）, ${roundX}, ${roundY}, ${screenW}, "${s.align}");</div>`) : '')
-
-            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="创建轮廓变量myStroke，宽度为${s.strokeWidth}">let myStroke = new BasicStroke(${s.strokeWidth});</div>`) : '')
-            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用轮廓变量myStroke">g.setStroke(myStroke);</div>`) : '')
-            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${isOutlineDynamic ? '与路线色一致' : s.outlineColor}">g.setColor(Color${isOutlineDynamic ? '(routeColor' : (`.decode("${s.outlineColor}"`)}));</div>`) : '')
-            + (hasOutline ? (`<div class="layer-line2 tooltip" data-tooltip="绘制${s.type === 'rect' ? '长方形' : '椭圆形'}轮廓（左上x=${roundX}，左上y=${roundY}，宽${roundW}，高${roundH}）">g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});</div>`) : '')
             + (isDynamicText(s) ? getDynamicTextOptionsHTML(s) : '')
             ;
 
@@ -2069,18 +2472,11 @@ Managed by TranSifona (https://github.com/TranSifona)
             + '<span class="licon">' + I.rect + '</span>'
             + '<span class="lname">显示屏背景</span>'
             + '</div>'
-            + (hasBg ? (`<div class="layer-line2 tooltip" data-tooltip="使用颜色${bgColor}">g.setColor(Color.decode("${bgColor}"));</div>`) : '')
-            + (hasBg ? (`<div class="layer-line2 tooltip" data-tooltip="填充长方形（左上x=0，左上y=0，宽${screenW}，高${screenH}）">g.fillRect(0, 0, ${screenW}, ${screenH});</div>`) : '')
             ;
           return li;
         }
 
-        if (layersTopFirst) listEl.appendChild(bgLi);
-
-        countEl.textContent = shapes.length + 1;
-
-        document.getElementById('orderTagTop').textContent = layersTopFirst ? '▲ 图层最前' : '▼ 图层最后';
-        document.getElementById('orderTagBottom').textContent = layersTopFirst ? '▼ 图层最后' : '▲ 图层最前';
+        listEl.appendChild(bgLi);
 
         emptyEl.style.display = shapes.length ? 'none' : 'block';
         hintEl.classList.toggle('gone', shapes.length > 0 || !!draft);
@@ -2092,12 +2488,92 @@ Managed by TranSifona (https://github.com/TranSifona)
 
         syncAlignUI();
         syncPickersToSelectedShape();
+        syncCoordInputs();
+        syncSizeInputs();
 
         const selectedTextShape = getShape(selectedId);
         fontSelect.value =
           selectedTextShape && selectedTextShape.type === 'text'
             ? normalizeFont(selectedTextShape.font)
             : currentFont;
+
+        syncCoordInputs();
+        syncSizeInputs();
+        syncInspectorControlStates();
+        renderSelectedCode();
+      }
+
+      function getJSCodePreview(s) {
+        const roundX = s.x.toFixed(0);
+        const roundY = s.y.toFixed(0);
+        const roundW = s.w.toFixed(0);
+        const roundH = s.h.toFixed(0);
+
+        const hasFill = (s.color && s.color !== 'transparent' && s.type !== 'image');
+        const hasShapeFill = (s.color && s.color !== 'transparent' && s.type !== 'image' && s.type !== 'text');
+        const hasTextFill = (s.color && s.color !== 'transparent' && s.type === 'text');
+        const isFillDynamic = (s.color === 'dynamic');
+        const hasOutline = (s.outlineColor && s.outlineColor !== 'transparent' && s.type !== 'image' && s.type !== 'text');
+        const isOutlineDynamic = (s.outlineColor === 'dynamic');
+
+        const lines = [];
+
+        if (s.type === 'image')
+          lines.push(`// 需要额外代码定义图片变量，请到文件设置导出JS代码查看`);
+        if (s.type === 'text')
+          lines.push(`// 需要额外代码定义AlignText函数，请到文件设置导出JS代码查看`);
+        if (isFillDynamic || isOutlineDynamic || isDynamicText(s))
+          lines.push(`// 需要额外代码读取游戏数据，请到文件设置导出JS代码查看`);
+        if (hasTextFill && s.group === 'routeMap' && s.type === 'text')
+          lines.push(`// 需要额外代码读取游戏数据，请到文件设置导出JS代码查看`);
+
+        if (s.type === 'text' && hasTextFill) {
+          lines.push(`g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}"`);
+          lines.push(`.deriveFont(0, ${s.fontSize}));`);
+        }
+
+        if (s.type === 'image')
+          lines.push(`g.drawImage(图片变量（略）, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
+
+        if (hasFill)
+          lines.push(`g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.color}"`)}));`);
+        if (hasShapeFill)
+          lines.push(`g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+
+        if (s.group !== 'routeMap' && !isDynamicText(s) && hasTextFill)
+          lines.push(`AlignText(g, "${s.text}", ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
+        if (s.group !== 'routeMap' && isDynamicText(s) && hasTextFill)
+          lines.push(`AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
+        if (s.group === 'routeMap' && s.type === 'text' && hasTextFill)
+          lines.push(`AlignText(g, 车站名称（略）, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
+
+        if (hasOutline) {
+          lines.push(`let myStroke = new BasicStroke(${s.strokeWidth});`);
+          lines.push(`g.setStroke(myStroke);`);
+          lines.push(`g.setColor(Color${isOutlineDynamic ? '(routeColor' : (`.decode("${s.outlineColor}"`)}));`);
+          lines.push(`g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
+        }
+
+        return lines;
+      }
+
+      function renderSelectedCode() {
+        const codeEl = document.getElementById('selectedCode');
+        if (!codeEl) return;
+
+        const s = getShape(selectedId);
+
+        if (!s) {
+          codeEl.textContent = 'No layer selected.';
+          return;
+        }
+
+        const lines = [
+          `// ${s.name}`,
+          ...getJSCodePreview(s)
+        ];
+
+        codeEl.textContent = lines.join('\n');
       }
 
       listEl.addEventListener('click', e => {
@@ -2172,18 +2648,6 @@ Managed by TranSifona (https://github.com/TranSifona)
         renderLayerList();
         render();
         pushHistory();
-      });
-
-      /* ---------- layer order toggle ---------- */
-      const orderToggle = document.getElementById('orderToggle');
-      orderToggle.addEventListener('click', () => {
-        layersTopFirst = !layersTopFirst;
-        orderToggle.classList.toggle('reversed', !layersTopFirst);
-        document.getElementById('orderLabel').textContent = layersTopFirst ? '图层从前到后' : '图层从后到前';
-        orderToggle.title = layersTopFirst
-          ? '点击切换排序方式'
-          : '点击切换排序方式';
-        renderLayerList();
       });
 
       /* ---------- pointer interaction ---------- */
@@ -3281,8 +3745,8 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(``);
 
         if (hasRouteMap) {
-          screenW = 2000;
-          screenH = 400;
+          //screenW = 2000;
+          //screenH = 400;
           lines.push(`function DrawRouteMap(g, routePlats, nextStopIndex, hasArrived, state, routeColor, isNextToDepot, isGoingToDepot) {`);
           lines.push(``);
           lines.push(`  g.setColor(Color(routeColor));`);
@@ -3845,7 +4309,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n- 使用触屏时，部分图形编辑功能不可用\n\n【v0.1.2更新】\n临时修复了导出JS路线图不显示的问题，目前路线图使用固定尺寸：2000x400；\n修复了一些导出JS代码里的错字。\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。\n\n此工具使用生成式AI技术辅助创作。');
+      alert('【已知明显问题】\n- 在一些设备导出的代码，中文部分会变成乱码\n\n【v0.1.3更新】\n- 新增右侧栏，把图形参数移到了那里，\n可以直接输入参数调整图形位置和尺寸；\n- 现在可以用鼠标滚轮缩放画板\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n此工具暂未适配手机画面，建议用电脑开启。\n\n此工具在制作阶段使用了生成式AI技术辅助，\n但您的所有操作都不会调用AI生成。\n本工具纯前端运行，不会收集您的作品。');
     })();
   </script>
 </body>
