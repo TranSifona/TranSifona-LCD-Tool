@@ -3862,7 +3862,7 @@ Managed by TranSifona (https://github.com/TranSifona)
               if (isColorDynamic)
                 lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`  g.setColor(Color.decode("${s.color}"));`);
+                lines.push(`  g.setColor(Color.decode("${s.color === 'dynamic' ? '#0faa9b' : 'dynamic'}"));`);
               lines.push(`  g.fill${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
             if (hasOutlineColor) {
@@ -3873,7 +3873,7 @@ Managed by TranSifona (https://github.com/TranSifona)
               if (isOutlineColorDynamic)
                 lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`  g.setColor(Color.decode("${s.outlineColor}"));`);
+                lines.push(`  g.setColor(Color.decode("${s.outlineColor === 'dynamic' ? '#0faa9b' : 'dynamic'}"));`);
               lines.push(`  g.draw${s.type === 'rect' ? 'Rect' : 'Oval'}(${roundX}, ${roundY}, ${roundW}, ${roundH});`);
             }
           }
@@ -3889,7 +3889,7 @@ Managed by TranSifona (https://github.com/TranSifona)
               if (isColorDynamic)
                 lines.push(`  g.setColor(Color(routeColor));`);
               else
-                lines.push(`  g.setColor(Color.decode("${s.color}"));`);
+                lines.push(`  g.setColor(Color.decode("${s.color === 'dynamic' ? '#0faa9b' : 'dynamic'}"));`);
               if (DYNAMIC_TEXT_VALUES.has(s.text) && exportWithRouteData)
                 lines.push(`  AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
               else
@@ -3927,7 +3927,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           if (exportWithRouteData)
             lines.push(`  g.setColor(Color(routeColor));`);
           else
-            lines.push(`  g.setColor(Color.decode("#ff3ca0"));`);
+            lines.push(`  g.setColor(Color.decode("#0faa9b"));`);
           lines.push(`  g.fillRect(${(screenW - screenW * 0.8) / 2}, ${screenH * 0.5 - 10}, ${screenW * 0.8}, 20);`);
           lines.push(``);
 
