@@ -1226,7 +1226,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       <!--
       <option value="en">English</option>
       <option value="zht">繁体中文</option>
-          -->
+    -->
       <option value="zhs">简体中文</option>
 
     </select>
@@ -1363,7 +1363,8 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- LEFT: layer panel -->
     <aside>
       <div class="panel-head">
-        <h2>图层<br />（JS代码预览移到右侧栏了）</h2>
+        <h2><span id="layer-title">Layers</span><br /><span id="layer-title-2">(JS code preview has been moved to
+            right)</span></h2>
         <!--
         <div class="panel-head-right">
           <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
@@ -1391,15 +1392,15 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- RIGHT: settings -->
     <aside class="right-panel" id="rightPanel">
       <div class="panel-head">
-        <h2>图形属性</h2>
+        <h2 id="g-settings-title">Graphics settings</h2>
       </div>
 
       <div class="inspector-content">
         <section class="inspector-section">
-          <div class="inspector-title">参数</div>
+          <div class="inspector-title" id="param-title">Parameters</div>
 
           <div class="control-row">
-            <span class="color-label">填充色</span>
+            <span class="color-label" id="param-fill">Fill colour</span>
             <div class="file-menu-wrap" id="colorMenuWrap">
               <button class="color-display" id="colorDisplayBtn" style="background:#564c61" title=""
                 aria-haspopup="true" aria-expanded="false"></button>
@@ -1408,7 +1409,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           </div>
 
           <div class="control-row">
-            <span class="color-label">轮廓色</span>
+            <span class="color-label" id="param-outline">Outline colour</span>
             <div class="file-menu-wrap" id="outlineColorMenuWrap">
               <button class="color-display" id="outlineColorDisplayBtn" style="background:#0faa9b" title=""
                 aria-haspopup="true" aria-expanded="false"></button>
@@ -1418,41 +1419,41 @@ Managed by TranSifona (https://github.com/TranSifona)
           </div>
 
           <div class="control-row">
-            <span class="color-label">轮廓宽度</span>
+            <span class="color-label" id="param-outline-w">Outline width</span>
             <input id="outlineWidthInput" type="text" inputmode="numeric" value="10" title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label">左边X坐标</span>
+            <span class="color-label" id="param-x">X</span>
             <input id="shapeXInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label">Y坐标（文字：左下；其它：左上）</span>
+            <span class="color-label" id="param-y">Y</span>
             <input id="shapeYInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label">宽</span>
+            <span class="color-label" id="param-w">Width</span>
             <input id="shapeWInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label">高</span>
+            <span class="color-label" id="param-h">Height</span>
             <input id="shapeHInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label">文字大小</span>
+            <span class="color-label" id="param-text-size">Text size</span>
             <input id="fontSizeInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
 
           <div class="control-row">
-            <span class="color-label">字体</span>
+            <span class="color-label" id="param-font">Font</span>
             <select id="fontSelect" title="">
-              <option value="sans" selected>无衬线</option>
-              <option value="serif">有衬线</option>
+              <option value="sans" selected id="param-sans">Sans serif</option>
+              <option value="serif" id="param-serif">Serif</option>
             </select>
           </div>
 
@@ -1480,15 +1481,17 @@ Managed by TranSifona (https://github.com/TranSifona)
         </section>
 
         <section class="inspector-section">
-          <div class="inspector-title">JS代码预览<br />（完整代码请到文件设置导出）</div>
-          <div id="selectedCode" class="code-box">请先选择图形</div>
+          <div class="inspector-title"><span id="preview-title">JS code preview</span><br /><span
+              id="preview-title-2">(Export in File options for complete code)</span></div>
+          <div id="selectedCode" class="code-box">Select a shape to view</div>
         </section>
       </div>
     </aside>
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer>版本：0.1.6 | 遇到问题？请前往仙全铁作品评论区或<a href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
+  <footer><span id="footer">版本：0.1.6 | 遇到问题？请前往仙全铁作品评论区或</span><a
+      href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
       style="color: #87a39f;">Github代码库</a>反馈
   </footer>
 
@@ -1537,14 +1540,14 @@ Managed by TranSifona (https://github.com/TranSifona)
             <rect x="2" y="2" width="6" height="6" fill="currentColor" />
             <rect x="8" y="8" width="6" height="6" fill="currentColor" />
           </svg>
-          <span>像素渲染方向：<span id="export2OrientationLabel">竖向</span></span>
+          <span id="export-cpp-direction">Pixel direction: </span><span id="export2OrientationLabel">Vertical</span>
         </button>
         <button class="modal-item" id="export2BitOrderToggle" type="button">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <rect x="2" y="2" width="6" height="6" fill="currentColor" />
             <rect x="8" y="8" width="6" height="6" fill="currentColor" />
           </svg>
-          <span>像素渲染顺序：<span id="export2BitOrderLabel">LSB</span></span>
+          <span id="export-cpp-order">Pixel order: </span><span id="export2BitOrderLabel">LSB</span>
         </button>
         <button class="modal-item" id="exportJs2Btn">
           <svg width="14" height="14" viewBox="0 0 16 16">
@@ -4118,7 +4121,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       const export2BitOrderLabel = document.getElementById('export2BitOrderLabel');
 
       function updateExport2Toggles() {
-        export2OrientationLabel.textContent = export2Horizontal ? '横向' : '竖向';
+        export2OrientationLabel.textContent = export2Horizontal ? 'Horizontal' : 'Vertical';
         export2BitOrderLabel.textContent = export2MSB ? 'MSB' : 'LSB';
 
         export2OrientationToggle.setAttribute('aria-pressed', String(export2Horizontal));
@@ -4650,7 +4653,6 @@ Managed by TranSifona (https://github.com/TranSifona)
 
         document.getElementById("file-lcd-size").textContent = strings.lcdSize;
         document.getElementById("file-lcd-size-2").textContent = strings.lcdSize2;
-        //document.getElementById("file-lcd-size-3").textContent = strings.lcdSize3;
         document.getElementById("file-lcd-w").textContent = strings.lcdW;
         document.getElementById("file-lcd-h").textContent = strings.lcdH;
         document.getElementById("file-canvas-zoom").textContent = strings.zoom;
@@ -4664,13 +4666,43 @@ Managed by TranSifona (https://github.com/TranSifona)
 
         document.getElementById("export-title").textContent = strings.exportTitle;
         document.getElementById("export-js-title").textContent = strings.exportJsTitle;
-        //document.getElementById("export-js").textContent = strings.exportJs;
         document.getElementById("export-js-1").textContent = strings.exportJs1;
         document.getElementById("export-js-2").textContent = strings.exportJs2;
         document.getElementById("export-js-3").textContent = strings.exportJs3;
         document.getElementById("export-bug").textContent = strings.exportBug;
         document.getElementById("export-cpp-title").textContent = strings.exportCppTitle;
+        document.getElementById("export-cpp-direction").textContent = strings.exportCppDirection;
+        //document.getElementById("export-cpp-vert").textContent = strings.exportCppVert;
+        //document.getElementById("export-cpp-hori").textContent = strings.exportCppHori;
+        document.getElementById("export-cpp-order").textContent = strings.exportCppOrder;
         document.getElementById("export-cpp").textContent = strings.exportCpp;
+
+        document.getElementById("layer-title").textContent = strings.layerTitle;
+        document.getElementById("layer-title-2").textContent = strings.layerTitle2;
+        //document.getElementById("layer-bg").textContent = strings.layerBg;
+
+        document.getElementById("g-settings-title").textContent = strings.gSettingsTitle;
+        document.getElementById("param-title").textContent = strings.paramTitle;
+        document.getElementById("param-fill").textContent = strings.paramFill;
+        document.getElementById("param-outline").textContent = strings.paramOutline;
+        document.getElementById("param-outline-w").textContent = strings.paramOutlineW;
+        document.getElementById("param-x").textContent = strings.paramX;
+        document.getElementById("param-y").textContent = strings.paramY;
+        document.getElementById("param-w").textContent = strings.paramW;
+        document.getElementById("param-h").textContent = strings.paramH;
+        document.getElementById("param-text-size").textContent = strings.paramTextSize;
+        document.getElementById("param-font").textContent = strings.paramFont;
+        document.getElementById("param-sans").textContent = strings.paramSans;
+        document.getElementById("param-serif").textContent = strings.paramSerif;
+
+        document.getElementById("preview-title").textContent = strings.previewTitle;
+        document.getElementById("preview-title-2").textContent = strings.previewTitle2;
+
+        //document.getElementById("canvas-title").textContent = strings.canvasTitle;
+        //document.getElementById("canvas-hint-1").textContent = strings.canvasHint1;
+        //document.getElementById("canvas-hint-2").textContent = strings.canvasHint2;
+
+        document.getElementById("footer").textContent = strings.footer;
 
         document.documentElement.lang = lang;
 
