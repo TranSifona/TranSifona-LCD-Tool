@@ -4626,7 +4626,7 @@ Managed by TranSifona (https://github.com/TranSifona)
 
       function setLanguage(lang) {
         if (!isSupportedLanguage(lang)) {
-          lang = "en";
+          lang = "zhs";
         }
 
         const strings = translations[lang];
@@ -4689,7 +4689,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           const urlLanguage = getLanguageFromURL();
           const savedLanguage = localStorage.getItem("language");
 
-          let initialLanguage = "en";
+          let initialLanguage = "zhs";
 
           if (isSupportedLanguage(urlLanguage)) {
             initialLanguage = urlLanguage;
