@@ -1116,7 +1116,7 @@ Managed by TranSifona (https://github.com/TranSifona)
   <header>
     <div class="brand">
       <img src="./tsfn-logo.png" width="26" height="26" />
-      <span id="app-title">TranSifona LCD Tool</span>
+      <span data-i18n="appTitle">TranSifona LCD Tool</span>
     </div>
 
     <div class="divider"></div>
@@ -1146,7 +1146,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           <path d="M3 1.5 13 7.8 8.6 8.9 6.4 13.5 3 1.5Z" fill="none" stroke="currentColor" stroke-width="1.5"
             stroke-linejoin="round" />
         </svg>
-        <span id="menu-select-title">Select</span> <kbd>V</kbd>
+        <span data-i18n="select">Select</span> <kbd>V</kbd>
       </button>
 
       <div class="file-menu-wrap">
@@ -1157,7 +1157,7 @@ Managed by TranSifona (https://github.com/TranSifona)
               stroke-width="1.5" />
             <ellipse cx="11" cy="10.5" rx="4" ry="3" fill="none" stroke="currentColor" stroke-width="1.5" />
           </svg>
-          <span id="menu-shapes-title">Shapes</span>
+          <span data-i18n="shapes">Shapes</span>
           <svg width="9" height="9" viewBox="0 0 16 16">
             <path d="m3 6 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" />
@@ -1169,14 +1169,14 @@ Managed by TranSifona (https://github.com/TranSifona)
             <svg width="14" height="14" viewBox="0 0 16 16">
               <rect x="2" y="3" width="12" height="10" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.5" />
             </svg>
-            <span id="shapes-rect-title">Rectangle</span> <kbd>R</kbd>
+            <span data-i18n="rect">Rectangle</span> <kbd>R</kbd>
           </button>
 
           <button class="menu-item" id="ovalOptionBItem">
             <svg width="14" height="14" viewBox="0 0 16 16">
               <ellipse cx="8" cy="8" rx="6" ry="5" fill="none" stroke="currentColor" stroke-width="1.5" />
             </svg>
-            <span id="shapes-oval-title">Oval</span> <kbd>O</kbd>
+            <span data-i18n="oval">Oval</span> <kbd>O</kbd>
           </button>
         </div>
       </div>
@@ -1188,7 +1188,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           <circle cx="5.5" cy="5.5" r="1.5" fill="currentColor" stroke="none" />
           <path d="M2 11l3.5-3.5L9 11l2.5-2.5L14 11" stroke-linejoin="round" />
         </svg>
-        <span id="menu-image-title">Image</span>
+        <span data-i18n="image">Image</span>
       </button>
       <input type="file" id="imageInput" accept="image/*" hidden>
 
@@ -1200,7 +1200,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <path d="M9 20h6" />
             <path d="M12 4v16" />
           </svg>
-          <span id="menu-text-title">Text</span>
+          <span data-i18n="text">Text</span>
           <svg width="9" height="9" viewBox="0 0 16 16">
             <path d="m3 6 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"
               stroke-linejoin="round" />
@@ -1208,10 +1208,10 @@ Managed by TranSifona (https://github.com/TranSifona)
         </button>
         <div class="file-menu" id="textMenu">
           <button class="menu-item" id="fixedTextItem">
-            <span id="text-fixed-title">Fixed content</span> <kbd>T</kbd>
+            <span data-i18n="fixedText">Fixed content</span> <kbd>T</kbd>
           </button>
           <button class="menu-item" id="dynamicTextItem">
-            <span id="text-var-title">Variable content</span>
+            <span data-i18n="variableText">Variable content</span>
           </button>
         </div>
       </div>
@@ -1237,7 +1237,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           <path d="M2 4.5h12M2 8h12M2 11.5h12" fill="none" stroke="currentColor" stroke-width="1.4"
             stroke-linecap="round" />
         </svg>
-        <span id="menu-file-options-title">File options</span>
+        <span data-i18n="fileOptions">File options</span>
         <svg width="10" height="10" viewBox="0 0 16 16">
           <path d="m3 6 5 5 5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"
             stroke-linejoin="round" />
@@ -1251,13 +1251,12 @@ Managed by TranSifona (https://github.com/TranSifona)
             <svg width="14" height="14" viewBox="0 0 16 16">
               <rect x="2.5" y="4" width="13" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.4" />
             </svg>
-            <span id="file-lcd-size">LCD size</span><span id="file-lcd-size-2" style="color: var(--danger);">This
-              setting will not be exported to JS</span>
+            <span id="file-lcd-size">LCD size</span><span data-i18n="lcdSize2" style="color: var(--danger);">This setting will not be exported to JS</span>
           </div>
           <div class="screen-size-inputs">
-            <label class="color-label" for="screenWInput" id="file-lcd-w">Width</label>
+            <label class="color-label" for="screenWInput" data-i18n="width">Width</label>
             <input id="screenWInput" type="text" min="0" step="10" value="2000">
-            <label class="color-label" for="screenHInput" id="file-lcd-h">Height</label>
+            <label class="color-label" for="screenHInput" data-i18n="height">Height</label>
             <input id="screenHInput" type="text" min="0" step="10" value="400">
           </div>
         </div>
@@ -1267,7 +1266,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <svg width="14" height="14" viewBox="0 0 16 16">
               <path d="M2 8h12M8 2v12" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
             </svg>
-            <span id="file-canvas-zoom">Canvas zoom</span>
+            <span data-i18n="zoom">Canvas zoom</span>
           </div>
           <div class="screen-size-inputs">
             <input id="scaleInput" type="text" inputmode="numeric" value="50">
@@ -1283,7 +1282,7 @@ Managed by TranSifona (https://github.com/TranSifona)
               <path d="M4 12 8 5.5 12 12" fill="none" stroke="currentColor" stroke-width="1.2"
                 stroke-linejoin="round" />
             </svg>
-            <span id="file-lcd-bg">LCD background</span>
+            <span data-i18n="bg">LCD background</span>
           </div>
           <div class="screen-size-inputs">
             <div class="bg-color-menu-wrap" id="bgColorMenuWrap">
@@ -1301,7 +1300,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <path d="M8 2v7M8 9 5 6M8 9l3-3M2.5 11v1.5A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5V11" fill="none"
               stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="file-import-lcd">Import canvas from JSON</span>
+          <span data-i18n="importLcd">Import canvas from JSON</span>
         </button>
 
         <button class="menu-item" id="exportBtn" title="">
@@ -1309,7 +1308,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <path d="M8 9V2M8 2 5 5M8 2l3 3M2.5 11v1.5A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5V11" fill="none"
               stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="file-export-lcd">Export canvas as JSON</span>
+          <span data-i18n="exportLcd">Export canvas as JSON</span>
         </button>
 
         <hr />
@@ -1321,14 +1320,14 @@ Managed by TranSifona (https://github.com/TranSifona)
             <circle cx="3" cy="13" r="1.5" fill="none" stroke="currentColor" stroke-width="1.4" />
             <circle cx="13" cy="3" r="1.5" fill="none" stroke="currentColor" stroke-width="1.4" />
           </svg>
-          <span id="file-go-to-rmg">Go to RMG (Rail Map Generator)</span>
+          <span data-i18n="goToRmg">Go to RMG (Rail Map Generator)</span>
         </button>
         <button class="menu-item" id="importFromRmgBtn" title="">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M8 2v7M8 9 5 6M8 9l3-3M2.5 11v1.5A1.5 1.5 0 0 0 4 14h8a1.5 1.5 0 0 0 1.5-1.5V11" fill="none"
               stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="file-import-rmg">Import route map from RMG</span>
+          <span data-i18n="importRmg">Import route map from RMG</span>
         </button>
 
         <hr />
@@ -1338,7 +1337,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <path d="M5.5 4 2.5 8l3 4M10.5 4l3 4-3 4" fill="none" stroke="currentColor" stroke-width="1.4"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="file-export-code">Export code</span>
+          <span data-i18n="exportCode">Export code</span>
         </button>
 
         <hr />
@@ -1348,7 +1347,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             <path d="M2.5 4h11M6.5 2h3M4 4l.7 9.3A1.5 1.5 0 0 0 6.2 14.7h3.6a1.5 1.5 0 0 0 1.5-1.4L12 4M6.5 7v5M9.5 7v5"
               fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
           </svg>
-          <span id="file-canvas-clear">Clear canvas</span>
+          <span data-i18n="clear">Clear canvas</span>
         </button>
 
       </div>
@@ -1363,8 +1362,7 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- LEFT: layer panel -->
     <aside>
       <div class="panel-head">
-        <h2><span id="layer-title">Layers</span><br /><span id="layer-title-2">(JS code preview has been moved to
-            right)</span></h2>
+        <h2><span data-i18n="layerTitle">Layers</span><br /><span data-i18n="layerTitle2">(JS code preview has been moved to right)</span></h2>
         <!--
         <div class="panel-head-right">
           <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
@@ -1392,15 +1390,15 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- RIGHT: settings -->
     <aside class="right-panel" id="rightPanel">
       <div class="panel-head">
-        <h2 id="g-settings-title">Graphics settings</h2>
+        <h2 data-i18n="gSettingsTitle">Graphics settings</h2>
       </div>
 
       <div class="inspector-content">
         <section class="inspector-section">
-          <div class="inspector-title" id="param-title">Parameters</div>
+          <div class="inspector-title" data-i18n="paramTitle">Parameters</div>
 
           <div class="control-row">
-            <span class="color-label" id="param-fill">Fill colour</span>
+            <span class="color-label" data-i18n="paramFill">Fill colour</span>
             <div class="file-menu-wrap" id="colorMenuWrap">
               <button class="color-display" id="colorDisplayBtn" style="background:#564c61" title=""
                 aria-haspopup="true" aria-expanded="false"></button>
@@ -1409,7 +1407,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-outline">Outline colour</span>
+            <span class="color-label" data-i18n="paramOutline">Outline colour</span>
             <div class="file-menu-wrap" id="outlineColorMenuWrap">
               <button class="color-display" id="outlineColorDisplayBtn" style="background:#0faa9b" title=""
                 aria-haspopup="true" aria-expanded="false"></button>
@@ -1419,41 +1417,41 @@ Managed by TranSifona (https://github.com/TranSifona)
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-outline-w">Outline width</span>
+            <span class="color-label" data-i18n="paramOutlineW">Outline width</span>
             <input id="outlineWidthInput" type="text" inputmode="numeric" value="10" title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-x">X</span>
+            <span class="color-label" data-i18n="paramX">X</span>
             <input id="shapeXInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-y">Y</span>
+            <span class="color-label" data-i18n="paramY">Y</span>
             <input id="shapeYInput" type="text" inputmode="decimal" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-w">Width</span>
+            <span class="color-label" data-i18n="width">Width</span>
             <input id="shapeWInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-h">Height</span>
+            <span class="color-label" data-i18n="height">Height</span>
             <input id="shapeHInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
           <div class="control-row">
-            <span class="color-label" id="param-text-size">Text size</span>
+            <span class="color-label" data-i18n="paramTextSize">Text size</span>
             <input id="fontSizeInput" type="text" inputmode="numeric" placeholder="—" disabled title="">
           </div>
 
 
           <div class="control-row">
-            <span class="color-label" id="param-font">Font</span>
+            <span class="color-label" data-i18n="paramFont">Font</span>
             <select id="fontSelect" title="">
-              <option value="sans" selected id="param-sans">Sans serif</option>
-              <option value="serif" id="param-serif">Serif</option>
+              <option value="sans" selected data-i18n="paramSans">Sans serif</option>
+              <option value="serif" data-i18n="paramSerif">Serif</option>
             </select>
           </div>
 
@@ -1481,8 +1479,8 @@ Managed by TranSifona (https://github.com/TranSifona)
         </section>
 
         <section class="inspector-section">
-          <div class="inspector-title"><span id="preview-title">JS code preview</span><br /><span
-              id="preview-title-2">(Export in File options for complete code)</span></div>
+          <div class="inspector-title"><span data-i18n="previewTitle">JS code preview</span><br /><span
+              data-i18n="previewTitle2">(Export in File options for complete code)</span></div>
           <div id="selectedCode" class="code-box">Select a shape to view</div>
         </section>
       </div>
@@ -1490,7 +1488,7 @@ Managed by TranSifona (https://github.com/TranSifona)
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer><span id="footer">版本：0.1.6 | 遇到问题？请前往仙全铁作品评论区或</span><a
+  <footer><span data-i18n="footer">版本：0.1.6 | 遇到问题？请前往仙全铁作品评论区或</span><a
       href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
       style="color: #87a39f;">Github代码库</a>反馈
   </footer>
@@ -1499,7 +1497,7 @@ Managed by TranSifona (https://github.com/TranSifona)
   <div id="exportCodeModal" class="modal-overlay">
     <div class="modal-box">
       <div class="modal-header">
-        <span class="modal-title" id="export-title">Export code options</span>
+        <span class="modal-title" data-i18n="exportTitle">Export code options</span>
         <button class="modal-close" id="exportCodeModalClose">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M3 3l10 10M13 3L3 13" fill="none" stroke="currentColor" stroke-width="1.6"
@@ -1508,53 +1506,53 @@ Managed by TranSifona (https://github.com/TranSifona)
         </button>
       </div>
       <div class="modal-body">
-        <span class="modal-title-2" id="export-js-title">JavaScript (for MTR mod)</span>
+        <span class="modal-title-2" data-i18n="exportJsTitle">JavaScript (for MTR mod)</span>
         <button class="modal-item" id="exportGraphicsBtn">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M5.5 4 2.5 8l3 4M10.5 4l3 4-3 4" fill="none" stroke="currentColor" stroke-width="1.4"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="export-js-1">Export JS code (graphics only)</span>
+          <span data-i18n="exportJs1">Export JS code (graphics only)</span>
         </button>
         <button class="modal-item" id="exportWithBaseBtn">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M5.5 4 2.5 8l3 4M10.5 4l3 4-3 4" fill="none" stroke="currentColor" stroke-width="1.4"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="export-js-2">Export JS code (base code + graphics)</span>
+          <span data-i18n="exportJs2">Export JS code (base code + graphics)</span>
         </button>
         <button class="modal-item" id="exportWithRouteDataBtn">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M5.5 4 2.5 8l3 4M10.5 4l3 4-3 4" fill="none" stroke="currentColor" stroke-width="1.4"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="export-js-3">Export JS code (base code + graphics + read route
-            data)</span><span id="export-bug" style="color: var(--danger);">May cause some bugs</span>
+          <span data-i18n="exportJs3">Export JS code (base code + graphics + read route
+            data)</span><span data-i18n="exportBug" style="color: var(--danger);">May cause some bugs</span>
         </button>
 
         <hr class="modal-divider" />
 
-        <span class="modal-title-2" id="export-cpp-title">C++ (for Arduino)</span>
+        <span class="modal-title-2" data-i18n="exportCppTitle">C++ (for Arduino)</span>
         <button class="modal-item" id="export2OrientationToggle" type="button">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <rect x="2" y="2" width="6" height="6" fill="currentColor" />
             <rect x="8" y="8" width="6" height="6" fill="currentColor" />
           </svg>
-          <span id="export-cpp-direction">Pixel direction: </span><span id="export2OrientationLabel">Vertical</span>
+          <span data-i18n="exportCppDirection">Pixel direction: </span><span id="export2OrientationLabel">Vertical</span>
         </button>
         <button class="modal-item" id="export2BitOrderToggle" type="button">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
             <rect x="2" y="2" width="6" height="6" fill="currentColor" />
             <rect x="8" y="8" width="6" height="6" fill="currentColor" />
           </svg>
-          <span id="export-cpp-order">Pixel order: </span><span id="export2BitOrderLabel">LSB</span>
+          <span data-i18n="exportCppOrder">Pixel order: </span><span id="export2BitOrderLabel">LSB</span>
         </button>
         <button class="modal-item" id="exportJs2Btn">
           <svg width="14" height="14" viewBox="0 0 16 16">
             <path d="M5.5 4 2.5 8l3 4M10.5 4l3 4-3 4" fill="none" stroke="currentColor" stroke-width="1.4"
               stroke-linecap="round" stroke-linejoin="round" />
           </svg>
-          <span id="export-cpp">Export C++ code</span>
+          <span data-i18n="exportCpp">Export C++ code</span>
         </button>
       </div>
     </div>
@@ -4598,150 +4596,10 @@ Managed by TranSifona (https://github.com/TranSifona)
       }
 
       alert('【已知明显问题】\n- 若您制作的显示屏需读取MTR路线数据，由于模组版本不同会导致读取代码的流程不同，导出的代码**只适用于部分版本的MTR模组**，目前我们仍在排查问题！有能力的话请自行修改导出后的代码\n\n- 在一些设备导出的代码，中文部分会变成乱码\n\n- 此工具暂未适配手机版竖屏，建议在电脑横屏上使用\n\n【v0.1.6更新】\n- 增加了更多导出选项，避免读取路线数据的bug导致整个显示屏不可用\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n\n此工具在制作阶段使用了生成式AI技术辅助，\n但您的所有操作都不会调用AI生成。\n本工具纯前端运行，不会收集您的作品。');
-
-      /* ---------- set language ---------- */
-      let translations = {};
-
-      const languageSelect = document.getElementById("language");
-
-      function getLanguageFromURL() {
-        const params = new URLSearchParams(window.location.search);
-        const lang = params.get("lang");
-
-        if (!lang) return null;
-
-        return lang.toLowerCase();
-      }
-
-      function isSupportedLanguage(lang) {
-        return Boolean(lang && translations[lang]);
-      }
-
-      function updateURL(lang) {
-        try {
-          const url = new URL(window.location.href);
-          url.searchParams.set("lang", lang);
-          window.history.replaceState({}, "", url);
-        } catch (error) {
-          console.warn("Could not update URL:", error);
-        }
-      }
-
-      function setLanguage(lang) {
-        if (!isSupportedLanguage(lang)) {
-          lang = "zhs";
-        }
-
-        const strings = translations[lang];
-
-        document.getElementById("app-title").textContent = strings.appTitle;
-        //document.getElementById("menu-undo-hint").textContent = strings.undoHint;
-        document.getElementById("menu-select-title").textContent = strings.select;
-        //document.getElementById("menu-select-hint").textContent = strings.selectHint;
-        document.getElementById("menu-shapes-title").textContent = strings.shapes;
-        //document.getElementById("menu-shapes-hint").textContent = strings.shapesHint;
-        document.getElementById("menu-image-title").textContent = strings.image;
-        //document.getElementById("menu-image-hint").textContent = strings.imageHint;
-        document.getElementById("menu-text-title").textContent = strings.text;
-        //document.getElementById("menu-text-hint").textContent = strings.textHint;
-        document.getElementById("menu-file-options-title").textContent = strings.fileOptions;
-
-        document.getElementById("shapes-rect-title").textContent = strings.rect;
-        document.getElementById("shapes-oval-title").textContent = strings.oval;
-        document.getElementById("text-fixed-title").textContent = strings.fixedText;
-        document.getElementById("text-var-title").textContent = strings.variableText;
-
-        document.getElementById("file-lcd-size").textContent = strings.lcdSize;
-        document.getElementById("file-lcd-size-2").textContent = strings.lcdSize2;
-        document.getElementById("file-lcd-w").textContent = strings.lcdW;
-        document.getElementById("file-lcd-h").textContent = strings.lcdH;
-        document.getElementById("file-canvas-zoom").textContent = strings.zoom;
-        document.getElementById("file-lcd-bg").textContent = strings.bg;
-        document.getElementById("file-import-lcd").textContent = strings.importLcd;
-        document.getElementById("file-export-lcd").textContent = strings.exportLcd;
-        document.getElementById("file-go-to-rmg").textContent = strings.goToRmg;
-        document.getElementById("file-import-rmg").textContent = strings.importRmg;
-        document.getElementById("file-export-code").textContent = strings.exportCode;
-        document.getElementById("file-canvas-clear").textContent = strings.clear;
-
-        document.getElementById("export-title").textContent = strings.exportTitle;
-        document.getElementById("export-js-title").textContent = strings.exportJsTitle;
-        document.getElementById("export-js-1").textContent = strings.exportJs1;
-        document.getElementById("export-js-2").textContent = strings.exportJs2;
-        document.getElementById("export-js-3").textContent = strings.exportJs3;
-        document.getElementById("export-bug").textContent = strings.exportBug;
-        document.getElementById("export-cpp-title").textContent = strings.exportCppTitle;
-        document.getElementById("export-cpp-direction").textContent = strings.exportCppDirection;
-        //document.getElementById("export-cpp-vert").textContent = strings.exportCppVert;
-        //document.getElementById("export-cpp-hori").textContent = strings.exportCppHori;
-        document.getElementById("export-cpp-order").textContent = strings.exportCppOrder;
-        document.getElementById("export-cpp").textContent = strings.exportCpp;
-
-        document.getElementById("layer-title").textContent = strings.layerTitle;
-        document.getElementById("layer-title-2").textContent = strings.layerTitle2;
-        //document.getElementById("layer-bg").textContent = strings.layerBg;
-
-        document.getElementById("g-settings-title").textContent = strings.gSettingsTitle;
-        document.getElementById("param-title").textContent = strings.paramTitle;
-        document.getElementById("param-fill").textContent = strings.paramFill;
-        document.getElementById("param-outline").textContent = strings.paramOutline;
-        document.getElementById("param-outline-w").textContent = strings.paramOutlineW;
-        document.getElementById("param-x").textContent = strings.paramX;
-        document.getElementById("param-y").textContent = strings.paramY;
-        document.getElementById("param-w").textContent = strings.paramW;
-        document.getElementById("param-h").textContent = strings.paramH;
-        document.getElementById("param-text-size").textContent = strings.paramTextSize;
-        document.getElementById("param-font").textContent = strings.paramFont;
-        document.getElementById("param-sans").textContent = strings.paramSans;
-        document.getElementById("param-serif").textContent = strings.paramSerif;
-
-        document.getElementById("preview-title").textContent = strings.previewTitle;
-        document.getElementById("preview-title-2").textContent = strings.previewTitle2;
-
-        //document.getElementById("canvas-title").textContent = strings.canvasTitle;
-        //document.getElementById("canvas-hint-1").textContent = strings.canvasHint1;
-        //document.getElementById("canvas-hint-2").textContent = strings.canvasHint2;
-
-        document.getElementById("footer").textContent = strings.footer;
-
-        document.documentElement.lang = lang;
-
-        languageSelect.value = lang;
-
-        localStorage.setItem("language", lang);
-
-        updateURL(lang);
-      }
-
-      async function loadTranslations() {
-        try {
-          const response = await fetch("lang.json");
-          translations = await response.json();
-
-          const urlLanguage = getLanguageFromURL();
-          const savedLanguage = localStorage.getItem("language");
-
-          let initialLanguage = "zhs";
-
-          if (isSupportedLanguage(urlLanguage)) {
-            initialLanguage = urlLanguage;
-          } else if (isSupportedLanguage(savedLanguage)) {
-            initialLanguage = savedLanguage;
-          }
-
-          setLanguage(initialLanguage);
-        } catch (error) {
-          console.error("Failed to load translations:", error);
-        }
-      }
-
-      languageSelect.addEventListener("change", function () {
-        setLanguage(this.value);
-      });
-
-      loadTranslations();
     })();
   </script>
+
+  <script src="./script.js"></script>
 
 </body>
 
