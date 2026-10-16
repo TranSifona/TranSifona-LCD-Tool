@@ -1181,8 +1181,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         </div>
       </div>
 
-      <button class="tool-btn" data-tool="image" title="Insert image"
-        onclick="alert('MTR模组JS暂时只支持.png和.jpeg\n（后缀为.jpg不行）')">
+      <button class="tool-btn" data-tool="image" title="Insert image" onclick="alert(t('alertImage'))">
         <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5">
           <rect x="2" y="2" width="12" height="12" rx="1.5" />
           <circle cx="5.5" cy="5.5" r="1.5" fill="currentColor" stroke="none" />
@@ -1224,8 +1223,8 @@ Managed by TranSifona (https://github.com/TranSifona)
     <select id="language" class="header-select" title="">
       <option value="" disabled selected>Language / 言</option>
       <!--
-      <option value="en">English</option>
-      <option value="zht">繁体中文</option>
+      <option value="en" disabled>English</option>
+      <option value="zht" disabled>繁体中文</option>
     -->
       <option value="zhs">简体中文</option>
 
@@ -1251,7 +1250,8 @@ Managed by TranSifona (https://github.com/TranSifona)
             <svg width="14" height="14" viewBox="0 0 16 16">
               <rect x="2.5" y="4" width="13" height="8" rx="1" fill="none" stroke="currentColor" stroke-width="1.4" />
             </svg>
-            <span id="file-lcd-size">LCD size</span><span data-i18n="lcdSize2" style="color: var(--danger);">This setting will not be exported to JS</span>
+            <span id="file-lcd-size">LCD size</span><span data-i18n="lcdSize2" style="color: var(--danger);">This
+              setting will not be exported to JS</span>
           </div>
           <div class="screen-size-inputs">
             <label class="color-label" for="screenWInput" data-i18n="width">Width</label>
@@ -1362,7 +1362,8 @@ Managed by TranSifona (https://github.com/TranSifona)
     <!-- LEFT: layer panel -->
     <aside>
       <div class="panel-head">
-        <h2><span data-i18n="layerTitle">Layers</span><br /><span data-i18n="layerTitle2">(JS code preview has been moved to right)</span></h2>
+        <h2><span data-i18n="layerTitle">Layers</span><br /><span data-i18n="layerTitle2">(JS code preview has been
+            moved to right)</span></h2>
         <!--
         <div class="panel-head-right">
           <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
@@ -1538,7 +1539,8 @@ Managed by TranSifona (https://github.com/TranSifona)
             <rect x="2" y="2" width="6" height="6" fill="currentColor" />
             <rect x="8" y="8" width="6" height="6" fill="currentColor" />
           </svg>
-          <span data-i18n="exportCppDirection">Pixel direction: </span><span id="export2OrientationLabel">Vertical</span>
+          <span data-i18n="exportCppDirection">Pixel direction: </span><span
+            id="export2OrientationLabel">Vertical</span>
         </button>
         <button class="modal-item" id="export2BitOrderToggle" type="button">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
@@ -1557,6 +1559,8 @@ Managed by TranSifona (https://github.com/TranSifona)
       </div>
     </div>
   </div>
+
+  <script src="./script.js"></script>
 
   <script>
     (function () {
@@ -3462,9 +3466,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       document.getElementById('clearBtn').addEventListener('click', () => {
         if (shapes.length === 0) return;
 
-        const ok = confirm(
-          '您的作品可能无法复原，建议您先导出画板工程文件。\n确定现在清空画板？'
-        );
+        const ok = confirm(t("confirmClear"));
         if (!ok) return;
 
         shapes.length = 0;
@@ -3492,7 +3494,7 @@ Managed by TranSifona (https://github.com/TranSifona)
 
       /* ---------- RMG ---------- */
       function goToRMG() {
-        const ok = confirm('您即将前往RMG，该工具并非仙全铁作品。\n请支持RMG原作者：Chito Wong\nhttps://github.com/wongchito');
+        const ok = confirm(t("confirmGoToRmg"));
         if (!ok) return;
         window.open('https://railmapgen.org/?app=rmg', '_blank', 'noopener');
       }
@@ -3501,7 +3503,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       const rmgFileInput = document.getElementById('rmgFileInput');
 
       function importFromRMG() {
-        const ok = alert('导入路线图仅供效果预览，\n实际游戏中的路线色和站名取决于MTR数据。\n\n暂不能显示支线；\n暂不能修改路线图位置和外观，以下除外：\n游戏内路线图站名颜色取决于画板最左边的站名颜色。');
+        const ok = alert(t("alertImportRmg"));
         rmgFileInput.click();
       }
       document.getElementById('importFromRmgBtn').addEventListener('click', importFromRMG);
@@ -3514,7 +3516,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           try {
             importRmgRouteMap(JSON.parse(reader.result));
           } catch (err) {
-            alert('导入失败！请确认文件格式正确。');
+            alert(t('alertImportFailed'));
           }
           rmgFileInput.value = '';
         };
@@ -3641,7 +3643,7 @@ Managed by TranSifona (https://github.com/TranSifona)
 
       function exportJsCode(exportWithBase, exportWithRouteData) {
 
-        const ok = confirm('【重要！导出代码后，您需要：】\n1. 将所有图片移动到与.js主文件\n（取决于mtr_custom_resources.json里的script路径）相同的目录\n\n2. 将导出后的文件的.txt改名为.js（受系统安全限制，暂无法直接导出为.js）\n\n3. 改名后，将此文件取代原有的.js主文件（如果仅导出图形代码，请自行复制到原有的主文件）\n\n代码内显示屏的尺寸和位置将与《仙全铁模板资源包》保持一致。\n如果您要调整尺寸和位置，请看《仙全铁MTR模组JS教程—第1集》和相关专栏。');
+        const ok = confirm(t("confirmExportJs"));
         if (!ok) return;
 
         const lines = [`// 使用《仙全铁显示屏工具》制作。更多资源请浏览：`];
@@ -4443,7 +4445,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             selectedId = null;
             renderLayerList(); render();
           } catch (err) {
-            alert('导入失败！请确认文件格式正确。');
+            alert(t("alertImportDFailed"));
           }
           fileInput.value = '';
         };
@@ -4595,11 +4597,10 @@ Managed by TranSifona (https://github.com/TranSifona)
         window.addEventListener('load', hideLoadingOverlay);
       }
 
-      alert('【已知明显问题】\n- 若您制作的显示屏需读取MTR路线数据，由于模组版本不同会导致读取代码的流程不同，导出的代码**只适用于部分版本的MTR模组**，目前我们仍在排查问题！有能力的话请自行修改导出后的代码\n\n- 在一些设备导出的代码，中文部分会变成乱码\n\n- 此工具暂未适配手机版竖屏，建议在电脑横屏上使用\n\n【v0.1.6更新】\n- 增加了更多导出选项，避免读取路线数据的bug导致整个显示屏不可用\n\n欢迎试用《仙全铁显示屏工具》！\n如有疑问或建议，请在仙全铁作品评论区或Github代码库留言～\n\n此工具在制作阶段使用了生成式AI技术辅助，\n但您的所有操作都不会调用AI生成。\n本工具纯前端运行，不会收集您的作品。');
+      alert(t("alertWelcome"));
+
     })();
   </script>
-
-  <script src="./script.js"></script>
 
 </body>
 
