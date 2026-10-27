@@ -376,7 +376,7 @@ https://space.bilibili.com/104383166
     }
 
     .color-display.dynamic-active::after {
-      content: "线";
+      content: "R";
       position: absolute;
       inset: 0;
       display: flex;
@@ -3606,8 +3606,8 @@ https://space.bilibili.com/104383166
           sel.className = 'color-mode-select';
           sel.id = picker.menuId + 'ModeSelect';
           sel.innerHTML =
-            '<option value="fixed">固定颜色</option>' +
-            '<option value="dynamic">跟随路线色</option>';
+            '<option value="fixed">' + (currentLang === 'zht' ? '固定顔色' : currentLang === 'zhs' ? '固定颜色' : 'Fixed colour') + '</option>' +
+              '<option value="dynamic">' + (currentLang === 'zht' ? '跟隨路綫色' : currentLang === 'zhs' ? '跟随路线色' : 'Change with route colour') + '</option>';
           sel.value = (picker.get() === DYNAMIC) ? 'dynamic' : 'fixed';
           menuEl.appendChild(sel);
         }
