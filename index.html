@@ -1,13 +1,17 @@
 <!--
-TranSifona LCD Tool v0.1.6
-仙全铁显示屏工具v0.1.6
+TranSifona LCD Tool v0.1.7
+仙全鐵螢幕工具v0.1.7
+仙全铁显示屏工具v0.1.7
 
 This project was created with generative AI assistance
-此项目使用生成式AI技术辅助制作
-More info 详情 : https://github.com/TranSifona/TranSifona-LCD-Tool
+此工具使用生成式AI技術輔助製作
+此工具使用生成式AI技术辅助制作
+More info | 詳細 | 详情 : https://github.com/TranSifona/TranSifona-LCD-Tool
 
-Managed by TranSifona (https://github.com/TranSifona)
-由仙全铁维护（https://space.bilibili.com/104383166）
+Managed by TranSifona | 由仙全鐵維護 | 由仙全铁维护
+https://github.com/TranSifona
+https://space.bilibili.com/104383166
+
 -->
 
 <!DOCTYPE html>
@@ -19,13 +23,13 @@ Managed by TranSifona (https://github.com/TranSifona)
   <title>TranSifona LCD Tool</title>
   <style>
     :root {
-      --bg: #0c1514;
+      --bg: #163A37;
       --panel: #121b1a;
       --panel-2: #182524;
       --border: #243a37;
-      --text: #e8f2f0;
+      --text: #f0f0f0;
       --muted: #87a39f;
-      --accent: #0faa9b;
+      --accent: #D5EE7B;
       --accent-soft: rgba(15, 170, 155, .16);
       --danger: #ff3ca0;
     }
@@ -94,8 +98,8 @@ Managed by TranSifona (https://github.com/TranSifona)
       align-items: center;
       gap: 9px;
       padding: 0 18px;
-      background: var(--panel);
-      border-bottom: 1px solid var(--border);
+      background: #163A37;
+      border-bottom: 1px solid #163A37;
       z-index: 5;
     }
 
@@ -461,7 +465,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       align-items: center;
       gap: 7px;
       border: 1px solid var(--border);
-      background: transparent;
+      background: var(--panel);
       color: var(--muted);
       font: 600 12px "San Francisco", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
       padding: 8px 13px;
@@ -1250,12 +1254,9 @@ Managed by TranSifona (https://github.com/TranSifona)
 
     <select id="language" class="header-select" title="">
       <option value="" disabled selected>Language / 言</option>
-      <!--
-      <option value="en" disabled>English</option>
-      <option value="zht" disabled>繁体中文</option>
-    -->
+      <option value="en">English</option>
+      <option value="zht">繁体中文</option>
       <option value="zhs">简体中文</option>
-
     </select>
 
     <div class="file-menu-wrap">
@@ -1394,9 +1395,9 @@ Managed by TranSifona (https://github.com/TranSifona)
         <h2><span data-i18n="layerTitle">Layers</span></h2>
         <!--
         <div class="panel-head-right">
-          <button class="order-toggle" id="orderToggle" title="点击切换排序方式">
-            <span>排序方式：</span>
-            <span id="orderLabel">图层从前到后</span>
+          <button class="order-toggle" id="orderToggle" title="Click to swap order">
+            <span>Layering order: </span>
+            <span id="orderLabel">Layers from front to back</span>
           </button>
           <span class="count-badge" id="layerCount"></span>
         </div>
@@ -1519,17 +1520,14 @@ Managed by TranSifona (https://github.com/TranSifona)
             </button>
           </div>
 
-          <div id="selectedCode" class="code-box" tabindex="0">请先在画板选择图形</div>
+          <div id="selectedCode" class="code-box" tabindex="0">Select a shape on canvas first</div>
         </section>
       </div>
     </aside>
   </main>
 
   <!-- ======= BOTTOM ======= -->
-  <footer><span data-i18n="footer">版本：0.1.6 | 遇到问题？请前往仙全铁作品评论区或</span><a
-      href="https://github.com/TranSifona/TranSifona-LCD-Tool/issues" target="_blank"
-      style="color: #87a39f;">Github代码库</a>反馈
-  </footer>
+  <footer><span data-i18n="footer">版本：0.1.7</span></footer>
 
   <!-- ======= EXPORT DIALOGUE ======= -->
   <div id="exportCodeModal" class="modal-overlay">
@@ -1631,6 +1629,11 @@ Managed by TranSifona (https://github.com/TranSifona)
       let drag = null;
       let draft = null;
       let clipboard = null;
+
+      // Touch control
+      const activePointers = new Map();
+      let pinch = null;
+
       let hasChanges = false;
       const history = [];
       let historyIndex = -1;
@@ -1970,7 +1973,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       /* ---------- helpers ---------- */
       const getShape = id => shapes.find(s => s.id === id);
 
-      const DYNAMIC_TEXT = '未知';
+      const DYNAMIC_TEXT = '';
 
       const DYNAMIC_TEXT_VALUES = new Set([
         DYNAMIC_TEXT,
@@ -2183,6 +2186,61 @@ Managed by TranSifona (https://github.com/TranSifona)
           x: Math.min(d.x0, d.x1), y: Math.min(d.y0, d.y1),
           w: Math.abs(d.x1 - d.x0), h: Math.abs(d.y1 - d.y0)
         };
+      }
+
+      // Touch
+      function startPinch() {
+        const pts = Array.from(activePointers.values()).slice(-2);
+        if (pts.length < 2) return;
+
+        const rect = canvas.getBoundingClientRect();
+
+        const midX = (pts[0].clientX + pts[1].clientX) / 2 - rect.left;
+        const midY = (pts[0].clientY + pts[1].clientY) / 2 - rect.top;
+
+        const dist =
+          Math.hypot(
+            pts[0].clientX - pts[1].clientX,
+            pts[0].clientY - pts[1].clientY
+          ) || 1;
+
+        pinch = {
+          startDist: dist,
+          startScale: scale,
+          worldX: (midX - offsetX) / scale,
+          worldY: (midY - offsetY) / scale
+        };
+      }
+
+      function updatePinch() {
+        if (!pinch) return;
+
+        const pts = Array.from(activePointers.values()).slice(-2);
+        if (pts.length < 2) return;
+
+        const rect = canvas.getBoundingClientRect();
+
+        const midX = (pts[0].clientX + pts[1].clientX) / 2 - rect.left;
+        const midY = (pts[0].clientY + pts[1].clientY) / 2 - rect.top;
+
+        const dist = Math.hypot(
+          pts[0].clientX - pts[1].clientX,
+          pts[0].clientY - pts[1].clientY
+        );
+
+        if (!dist) return;
+
+        scale = Math.max(
+          0.05,
+          Math.min(5, pinch.startScale * (dist / pinch.startDist))
+        );
+
+        offsetX = midX - pinch.worldX * scale;
+        offsetY = midY - pinch.worldY * scale;
+
+        scaleInput.value = String(Math.round(scale * 100));
+
+        applyView();
       }
 
       function getPos(e) {
@@ -2458,10 +2516,24 @@ Managed by TranSifona (https://github.com/TranSifona)
           g.textBaseline = 'top';
           g.globalAlpha = 1;
           g.fillStyle = 'rgb(200, 0, 100)';
-          g.fillText("显示屏可见范围", 50, 50);
-          g.font = '36px ' + FONTS.sans;
-          g.fillText("操作方法：先在顶部菜单选择图形，然后点击画板任意位置添加图形。", 50, 150);
-          g.fillText("提示：点击画板上的图形后，可以拖动角落调整大小，调整时按Shift键可以保持宽高比。", 50, 220);
+          if (currentLang === "zht") {
+            g.fillText("螢幕可見範圍", 50, 50);
+            g.font = '36px ' + FONTS.sans;
+            g.fillText("如何使用：先於頂部菜單選擇圖形，然後點擊畫板任意位置添加圖形。", 50, 150);
+            g.fillText("提示：點擊畫板上之圖形後，可拖動角落調校大小，調校時按Shift鍵可保持闊高比。", 50, 220);
+          }
+          else if (currentLang === "zhs") {
+            g.fillText("显示屏可见范围", 50, 50);
+            g.font = '36px ' + FONTS.sans;
+            g.fillText("操作方法：先在顶部菜单选择图形，然后点击画板任意位置添加图形。", 50, 150);
+            g.fillText("提示：点击画板上的图形后，可以拖动角落调整大小，调整时按Shift键可以保持宽高比。", 50, 220);
+          }
+          else {
+            g.fillText("Screen visible area", 50, 50);
+            g.font = '36px ' + FONTS.sans;
+            g.fillText("Select a shape from the top menu, then click anywhere on canvas to draw.", 50, 150);
+            g.fillText("Hint: resize a shape by dragging its corner, hold Shift to keep its width-height ratio.", 50, 220);
+          }
         }
       }
 
@@ -2652,21 +2724,59 @@ Managed by TranSifona (https://github.com/TranSifona)
         const bgLi = makeBgLayer();
 
         function getDynamicTextOptionsHTML(s) {
-          const opts = [
-            { value: 'nextTxZh', label: '1中文提示（行驶中：“下一站”；停车时：“已到達”）' },
-            { value: 'nextTxEn', label: '2英文提示（行驶中："Next is"；停车时："Now at"）' },
-            { value: 'nextZh', label: '3中文站名（行驶中：前方到站；停车时：当前站）' },
-            { value: 'nextEn', label: '4英文站名（行驶中：前方到站；停车时：当前站）' },
-            { value: 'destZh', label: '5终点站中文名' },
-            { value: 'destEn', label: '6终点站英文名' },
-            { value: 'next2TxZh', label: '7中文提示（行驶中：不显示；停车时：“下一站”）' },
-            { value: 'next2TxEn', label: '8英文提示（行驶中：不显示；停车时："Next is"）' },
-            { value: 'next2Zh', label: '9中文站名（行驶中：不显示；停车时：下一站）' },
-            { value: 'next2En', label: '10英文站名（行驶中：不显示；停车时：下一站）' },
-            { value: 'routeNameZh', label: '11路线中文名' },
-            { value: 'routeNameEn', label: '12路线英文名' },
-            { value: 'speed', label: '13速度（km/h）' }
-          ];
+          let opts = [];
+          if (currentLang === 'zht') {
+            opts = [
+              { value: 'nextTxZh', label: '1提示（行車時：“下一站”；到站停車時：“已到達”）' },
+              { value: 'nextTxEn', label: '2提示（行車時："Next is"；到站停車時："Now at"）' },
+              { value: 'nextZh', label: '3中文站名（行車時：下一站；到站停車時：當前站）' },
+              { value: 'nextEn', label: '4英文站名（行車時：下一站；到站停車時：當前站）' },
+              { value: 'destZh', label: '5終點站中文名' },
+              { value: 'destEn', label: '6終點站英文名' },
+              { value: 'next2TxZh', label: '7提示（行車時：無顯示；到站停車時：“下一站”）' },
+              { value: 'next2TxEn', label: '8提示（行車時：無顯示；到站停車時："Next is"）' },
+              { value: 'next2Zh', label: '9中文站名（行車時：無顯示；到站停車時：下一站）' },
+              { value: 'next2En', label: '10英文站名（行車時：無顯示；到站停車時：下一站）' },
+              { value: 'routeNameZh', label: '11路綫中文名' },
+              { value: 'routeNameEn', label: '12路綫英文名' },
+              { value: 'speed', label: '13速度（km/h）' }
+            ];
+          }
+          else if (currentLang === 'zhs') {
+            opts = [
+              { value: 'nextTxZh', label: '1提示（行驶中：“下一站”；到站停车时：“已到達”）' },
+              { value: 'nextTxEn', label: '2提示（行驶中："Next is"；到站停车时："Now at"）' },
+              { value: 'nextZh', label: '3中文站名（行驶中：下一站；到站停车时：当前站）' },
+              { value: 'nextEn', label: '4英文站名（行驶中：下一站；到站停车时：当前站）' },
+              { value: 'destZh', label: '5终点站中文名' },
+              { value: 'destEn', label: '6终点站英文名' },
+              { value: 'next2TxZh', label: '7提示（行驶中：不显示；到站停车时：“下一站”）' },
+              { value: 'next2TxEn', label: '8提示（行驶中：不显示；到站停车时："Next is"）' },
+              { value: 'next2Zh', label: '9中文站名（行驶中：不显示；到站停车时：下一站）' },
+              { value: 'next2En', label: '10英文站名（行驶中：不显示；到站停车时：下一站）' },
+              { value: 'routeNameZh', label: '11路线中文名' },
+              { value: 'routeNameEn', label: '12路线英文名' },
+              { value: 'speed', label: '13速度（km/h）' }
+            ];
+          }
+          else {
+            opts = [
+              { value: 'nextTxEn', label: '1 Message ("Next is" when en-route, "Now at" when arrived)' },
+              { value: 'nextTxZh', label: '2 Message ("下一站" when en-route, "已到達" when arrived)' },
+              { value: 'nextEn', label: '3 Station name in English (next when en-route, current when arrived)' },
+              { value: 'nextZh', label: '4 Station name in CJK (next when en-route, current when arrived)' },
+              { value: 'destEn', label: '5 Terminus in English' },
+              { value: 'destZh', label: '6 Terminus in CJK' },
+              { value: 'next2TxEn', label: '7 Message (nothing when en-route, "Next is" when arrived)' },
+              { value: 'next2TxZh', label: '8 Message (nothing when en-route, "下一站" when arrived)' },
+              { value: 'next2En', label: '9 Station name in English (nothing when en-route, next when arrived)' },
+              { value: 'next2Zh', label: '10 Station name in CJK (nothing when en-route, next when arrived)' },
+              { value: 'routeNameEn', label: '11 Route name in English' },
+              { value: 'routeNameZh', label: '12 Route name in CJK' },
+              { value: 'speed', label: '13 Speed (km/h)' }
+            ];
+          }
+
 
           const hasKnownValue = opts.some(o => o.value === s.text);
 
@@ -2674,7 +2784,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           html += '<select class="dynamic-select" title="">';
 
           if (!hasKnownValue) {
-            html += `<option value="${s.text}" disabled selected hidden>可变文字，请选择要显示的内容</option>`;
+            html += `<option value="${s.text}" disabled selected hidden>${currentLang === 'zht' ? '可變文字，請選擇要顯示的內容' : currentLang === 'zhs' ? '可变文字，请选择要显示的内容' : 'What data would you like to show?'}</option>`;
           }
 
           for (const o of opts) {
@@ -2720,7 +2830,7 @@ Managed by TranSifona (https://github.com/TranSifona)
             = '<div class="layer-line1">'
             + '<span class="swatch" style="background:' + col + '"></span>'
             + '<span class="licon">' + I.rect + '</span>'
-            + '<span class="lname">显示屏背景</span>'
+            + '<span class="lname">' + (currentLang === 'zht' ? '螢幕背景' : currentLang === 'zhs' ? '显示屏背景' : 'Screen background') + '</span>'
             + '</div>'
             ;
           return li;
@@ -2769,13 +2879,13 @@ Managed by TranSifona (https://github.com/TranSifona)
         const lines = [];
 
         if (s.type === 'image')
-          lines.push(`// 需要额外代码定义图片变量，请到文件设置导出JS代码查看`);
+          lines.push(t("previewImage"));
         if (s.type === 'text')
-          lines.push(`// 需要额外代码定义AlignText函数，请到文件设置导出JS代码查看`);
+          lines.push(t("previewText"));
         if (isFillDynamic || isOutlineDynamic || isDynamicText(s))
-          lines.push(`// 需要额外代码读取游戏数据，请到文件设置导出JS代码查看`);
+          lines.push(t("previewData"));
         if (hasTextFill && s.group === 'routeMap' && s.type === 'text')
-          lines.push(`// 需要额外代码读取游戏数据，请到文件设置导出JS代码查看`);
+          lines.push(t("previewData"));
 
         if (s.type === 'text' && hasTextFill) {
           lines.push(`g.setFont(Resources.getSystemFont("Noto ${s.font === 'sans' ? 'Sans' : 'Serif'}")`);
@@ -2783,7 +2893,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         }
 
         if (s.type === 'image')
-          lines.push(`g.drawImage(图片变量（略）, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
+          lines.push(`g.drawImage(${t("previewImgCon")}, ${roundX}, ${roundY}, ${roundW}, ${roundH}, null);`);
 
         if (hasFill)
           lines.push(`g.setColor(Color${isFillDynamic ? '(routeColor' : (`.decode("${s.color}"`)}));`);
@@ -2795,7 +2905,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         if (s.group !== 'routeMap' && isDynamicText(s) && hasTextFill)
           lines.push(`AlignText(g, ${s.text}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
         if (s.group === 'routeMap' && s.type === 'text' && hasTextFill)
-          lines.push(`AlignText(g, 车站名称（略）, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
+          lines.push(`AlignText(g, ${t("previewStnNam")}, ${roundX}, ${roundY}, ${screenW}, "${s.align}");`);
 
         if (hasOutline) {
           lines.push(`let myStroke = new BasicStroke(${s.strokeWidth});`);
@@ -2814,7 +2924,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         const s = getShape(selectedId);
 
         if (!s) {
-          codeEl.textContent = '请先在画板选择图形';
+          codeEl.textContent = currentLang === 'zht' ? '請於畫板選擇圖形' : currentLang === 'zhs' ? '请先在画板选择图形' : 'Select a shape on canvas first';
           return;
         }
 
@@ -2961,6 +3071,26 @@ Managed by TranSifona (https://github.com/TranSifona)
       /* ---------- pointer interaction ---------- */
       canvas.addEventListener('pointerdown', e => {
         if (e.button !== 0) return;
+
+        canvas.setPointerCapture(e.pointerId);
+
+        activePointers.set(e.pointerId, {
+          clientX: e.clientX,
+          clientY: e.clientY
+        });
+
+        // Two fingers => start pinch zoom
+        if (activePointers.size === 2) {
+          drag = null;
+          draft = null;
+          startPinch();
+          render();
+          return;
+        }
+
+        // Ignore third+ fingers for now
+        if (activePointers.size > 2) return;
+
         const p = getPos(e);
         canvas.setPointerCapture(e.pointerId);
 
@@ -2989,7 +3119,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           if (isDynamic) {
             content = DYNAMIC_TEXT;
           } else {
-            content = prompt('输入文字：', '');
+            content = prompt(currentLang === 'zht' ? '輸入文字：' : currentLang === 'zhs' ? '输入文字：' : "Enter text:", '');
             if (content === null || content.trim() === '') return;
             content = content.trim();
           }
@@ -2999,7 +3129,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           const s = {
             id: uid++,
             type: 'text',
-            name: '文字' + counters.text,
+            name: (currentLang === 'zht' ? '文字' : currentLang === 'zhs' ? '文字' : 'Text ') + counters.text,
             x: p.x,
             y: 0,
             text: content,
@@ -3063,6 +3193,18 @@ Managed by TranSifona (https://github.com/TranSifona)
       });
 
       canvas.addEventListener('pointermove', e => {
+        if (activePointers.has(e.pointerId)) {
+          activePointers.set(e.pointerId, {
+            clientX: e.clientX,
+            clientY: e.clientY
+          });
+        }
+
+        if (pinch && activePointers.size >= 2) {
+          updatePinch();
+          return;
+        }
+
         const p = getPos(e);
         if (drag) {
           if (drag.mode === 'pan') {
@@ -3193,8 +3335,19 @@ Managed by TranSifona (https://github.com/TranSifona)
         return m;
       }
 
-      function endPointer() {
+      function endPointer(e) {
         const wasPan = drag && drag.mode === 'pan';
+
+        if (e) {
+          activePointers.delete(e.pointerId);
+        }
+
+        if (pinch) {
+          if (activePointers.size < 2) {
+            pinch = null;
+          }
+          return;
+        }
 
         if (drag && drag.mode === 'draw' && draft) {
           const n = snapEdges(norm(draft));
@@ -3217,11 +3370,11 @@ Managed by TranSifona (https://github.com/TranSifona)
             };
 
             if (s.type === 'rect')
-              s.name = '长方形' + counters[draft.type];
+              s.name = (currentLang === 'zht' ? '長方形' : currentLang === 'zhs' ? '长方形' : 'Rectangle ') + counters[draft.type];
             else if (s.type === 'oval')
-              s.name = '椭圆形' + counters[draft.type];
+              s.name = (currentLang === 'zht' ? '橢圓形' : currentLang === 'zhs' ? '椭圆形' : 'Oval ') + counters[draft.type];
             else if (s.type === 'text')
-              s.name = '文字' + counters[draft.type];
+              s.name = (currentLang === 'zht' ? '文字' : currentLang === 'zhs' ? '文字' : 'Text ') + counters[draft.type];
 
             shapes.push(s);
             selectedId = s.id;
@@ -3604,7 +3757,7 @@ Managed by TranSifona (https://github.com/TranSifona)
       /* ---------- export / import ---------- */
       document.getElementById('exportBtn').addEventListener('click', () => {
         const data = JSON.stringify(
-          { app: 'TranSifona LCD Tool', version: 0.1, shapes, bgColor, screenW, screenH },
+          { app: 'TranSifona LCD Tool', version: '0.1.7', shapes, bgColor, screenW, screenH },
           (key, value) => (key === 'img' ? undefined : value),
           2
         );
@@ -3681,7 +3834,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         shapes.push({
           id: uid++,
           type: 'rect',
-          name: '(路线图)长方形' + (++counters.rect),
+          name: (currentLang === 'zht' ? '(路綫圖)長方形' : currentLang === 'zhs' ? '(路线图)长方形' : '(Route map) Rectangle ') + (++counters.rect),
           x: lineX, y: lineCY - lineH / 2, w: lineW, h: lineH,
           color: 'dynamic',
           outlineColor: 'transparent',
@@ -3708,7 +3861,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           const s = {
             id: uid++,
             type: 'text',
-            name: '(路线图)文字' + (++counters.text),
+            name: (currentLang === 'zht' ? '(路綫圖)文字' : currentLang === 'zhs' ? '(路线图)文字' : '(Route map) Text ') + (++counters.text),
             x: cx, y,
             text,
             color: textColor,
@@ -3733,7 +3886,7 @@ Managed by TranSifona (https://github.com/TranSifona)
           shapes.push({
             id: uid++,
             type: 'oval',
-            name: '(路线图)椭圆形' + (++counters.oval),
+            name: (currentLang === 'zht' ? '(路綫圖)橢圓形' : currentLang === 'zhs' ? '(路线图)椭圆形' : '(Route map) Oval ') + (++counters.oval),
             x: cx - R, y: lineCY - R, w: R * 2, h: R * 2,
             color: '#ffffff',
             outlineColor: '#000000',
@@ -3771,10 +3924,14 @@ Managed by TranSifona (https://github.com/TranSifona)
         const ok = confirm(t("confirmExportJs"));
         if (!ok) return;
 
-        const lines = [`// 使用《仙全铁显示屏工具》制作。更多资源请浏览：`];
-        lines.push(`// https://transifona.pages.dev/`);
+        const lines = [];
+        if (currentLang === 'zhs')
+          lines.push(`// 使用《仙全铁显示屏工具》制作，更多资源请浏览：`);
         lines.push(`// Made with TranSifona LCD Tool. For more resources, visit:`);
-        lines.push(`// https://transifona.pages.dev/`);
+        if (currentLang === 'zht')
+          lines.push(`// 使用《TranSifona仙全鐵螢幕工具》製作，更多資料請瀏覽：`);
+        lines.push(`// https://transifona.pages.dev/?lang=${currentLang}`);
+        lines.push(`// https://github.com/TranSifona/JavaScript-Tutorial-for-MTR-mod/wiki/`);
         lines.push(``);
 
         if (exportWithBase) {
@@ -4204,7 +4361,7 @@ Managed by TranSifona (https://github.com/TranSifona)
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'main.txt';
+        a.download = exportWithBase || exportWithRouteData ? 'main.js' : 'main.txt';
         a.click();
         URL.revokeObjectURL(url);
       }
@@ -4343,7 +4500,13 @@ Managed by TranSifona (https://github.com/TranSifona)
         const H = Math.round(screenH);
         if (W <= 0 || H <= 0) return;
 
-        if (!confirm('确认电显宽' + W + '像素，高' + H + '像素？\n代码只在SSD1306单色电显测试过，不保证其它电显可用。\n\n所有图形会合并到单一图层，暂不支持拆分图形；\n所有图形除纯黑和透明部份外，一律显示为白色；\n背景和可变内容将不会导出。\n\n如果电显画面异常，请尝试调整像素渲染方向和顺序。')) return;
+        if (!confirm(
+          currentLang === 'zht'
+            ? '確認電子螢幕闊' + W + '像素，高' + H + '像素？\n程式碼只在SSD1306單色電子螢幕測試過，不保證其它螢幕可用。\n\n所有圖形會合併至同一圖層，暫不可分離；\n所有圖形除純黑和透明部份外，一律顯示為白色；\n背景和可變內容將不會導出。\n\n如果螢幕畫面異常，請嘗試調校像素渲染方向及次序。'
+            : currentLang === 'zhs'
+              ? '确认电显宽' + W + '像素，高' + H + '像素？\n代码只在SSD1306单色电显测试过，不保证其它电显可用。\n\n所有图形会合并到单一图层，暂不支持拆分图形；\n所有图形除纯黑和透明部份外，一律显示为白色；\n背景和可变内容将不会导出。\n\n如果电显画面异常，请尝试调整像素渲染方向和顺序。'
+              : 'Confirm your LCD is ' + W + ' pixels wide and ' + H + ' pixels tall?\n\nWe only tested in SSD1306 monochrome display.\n\nAll graphics will be merged to a single layer.\nEverything will be white except from pure black and transparent parts.\nBackground and variable content will not be exported.\n\nIf the screen looks distorted, try adjusting the pixel direction and order in the export menu.'
+        )) return;
 
         const isWhite = c => {
           if (!c) return false;
@@ -4447,11 +4610,18 @@ Managed by TranSifona (https://github.com/TranSifona)
 
         const lines = [];
         //export c++ code
-        lines.push(`//Example wiring - depends on your hardware specs`);
-        lines.push(`//Check for pinouts at: https://docs.arduino.cc/hardware/`);
-        lines.push(`//接线示例，因开发板型号而异`);
-        lines.push(`//具体可前往：https://docs.arduino.cc/hardware/`);
-        lines.push(`//搜索您的开发板型号，并查看Pinout`);
+        if (currentLang === 'zhs') {
+          lines.push(`// 接线示例，因开发板型号而异`);
+          lines.push(`// 具体可前往：https://docs.arduino.cc/hardware/`);
+          lines.push(`// 搜索您的开发板型号，并查看Pinout`);
+        }
+        lines.push(`// Example wiring - depends on your hardware specs`);
+        lines.push(`// Check for pinouts at: https://docs.arduino.cc/hardware/`);
+        if (currentLang === 'zht') {
+          lines.push(`// 接綫範例，因開發板型號而異`);
+          lines.push(`// 具體信息可瀏覽：https://docs.arduino.cc/hardware/`);
+        }
+
         lines.push(`//SSD1306 pin SDA --- Arduino Nano pin A4`);
         lines.push(`//SSD1306 pin SCL --- Arduino Nano pin A5`);
         lines.push(`//SSD1306 pin VCC --- Arduino Nano pin 3V3`);
@@ -4463,8 +4633,11 @@ Managed by TranSifona (https://github.com/TranSifona)
         lines.push(``);
 
         lines.push(`const unsigned char graphics[] PROGMEM = {`);
-        lines.push(`  //Pixel code`);
-        lines.push(`  //这是像素代码：如果您不用SSD1306电显，可以只用这块代码。`);
+        if (currentLang === 'zhs')
+          lines.push(`  // 像素代码`);
+        lines.push(`  // Pixel code`);
+        if (currentLang === 'zht')
+          lines.push(`  // 像素程式碼`);
         lines.push(`  ${parts.join(', ')}`);
         lines.push(`};`);
         lines.push(``);
@@ -4527,7 +4700,7 @@ Managed by TranSifona (https://github.com/TranSifona)
                 type: s.type,
                 name: (typeof s.name === 'string' && s.name.trim())
                   ? s.name
-                  : (s.type === 'rect' ? '长方形' + (++fallback.rect) : s.type === 'oval' ? '椭圆形' + (++fallback.oval) : '文字' + (++fallback.text)),
+                  : (s.type === 'rect' ? 'Rectangle ' + (++fallback.rect) : s.type === 'oval' ? 'Oval ' + (++fallback.oval) : 'Text ' + (++fallback.text)),
                 x: Number(s.x) || 0,
                 y: Number(s.y) || 0,
                 w: Math.max(0, Number(s.w) || 0),
