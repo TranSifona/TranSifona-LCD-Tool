@@ -1487,19 +1487,19 @@ https://space.bilibili.com/104383166
 
           <div class="control-row"></div>
           <div class="tools" id="alignTools">
-            <button class="align-btn active" data-align="left" title="左对齐">
+            <button class="align-btn active" data-align="left" title="Align left">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
                 stroke-linecap="round">
                 <path d="M2 3.5h12M2 8h7M2 12.5h10" />
               </svg>
             </button>
-            <button class="align-btn" data-align="center" title="居中对齐">
+            <button class="align-btn" data-align="center" title="Align centre">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
                 stroke-linecap="round">
                 <path d="M2 3.5h12M4.5 8h7M3 12.5h10" />
               </svg>
             </button>
-            <button class="align-btn" data-align="right" title="右对齐">
+            <button class="align-btn" data-align="right" title="Align right">
               <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"
                 stroke-linecap="round">
                 <path d="M2 3.5h12M7 8h7M4 12.5h10" />
@@ -2808,10 +2808,10 @@ https://space.bilibili.com/104383166
             + '<span class="licon">' + (s.type === 'rect' ? I.rect : s.type === 'oval' ? I.oval : s.type === 'image' ? I.image : I.text) + '</span>'
             + '<span class="lname">' + s.name + '</span>'
             + '<span class="lbtns">'
-            + '<button data-action="up" title="移到前一个图层">' + I.up + '</button>'
-            + '<button data-action="down" title="移到后一个图层">' + I.down + '</button>'
-            + '<button data-action="vis" title="隐藏图层">' + (s.visible ? I.eye : I.eyeOff) + '</button>'
-            + '<button data-action="del" title="删除图层">' + I.trash + '</button>'
+            + '<button data-action="up" title="Move forward">' + I.up + '</button>'
+            + '<button data-action="down" title="Move backward">' + I.down + '</button>'
+            + '<button data-action="vis" title="Hide">' + (s.visible ? I.eye : I.eyeOff) + '</button>'
+            + '<button data-action="del" title="Delete">' + I.trash + '</button>'
             + '</span>'
             + '</div>'
             + (isDynamicText(s) ? getDynamicTextOptionsHTML(s) : '')
